@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>لوحة تحكم Hero</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',Tahoma,sans-serif;background:#0f172a;color:#f1f5f9;padding:16px;direction:rtl}
+.wrap{max-width:1200px;margin:0 auto}
+h1{color:#facc15;margin-bottom:8px;font-size:24px}
+.sub{color:#94a3b8;margin-bottom:20px;font-size:14px}
+.card{background:#1e293b;border-radius:16px;padding:20px;margin-bottom:16px;box-shadow:0 4px 20px rgba(0,0,0,.3)}
+.card h2{color:#facc15;font-size:18px;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+label{display:block;font-size:13px;color:#cbd5e1;margin-bottom:4px;margin-top:10px}
+input,select,textarea{width:100%;padding:10px 12px;border:2px solid #334155;border-radius:10px;background:#0f172a;color:#f1f5f9;font-size:14px;font-family:inherit}
+input:focus,select:focus,textarea:focus{border-color:#facc15;outline:none}
+button{padding:10px 20px;border:none;border-radius:10px;font-weight:600;cursor:pointer;font-size:14px;margin-top:10px}
+.btn-gold{background:#facc15;color:#0f172a}
+.btn-gold:hover{background:#eab308}
+.btn-red{background:#ef4444;color:#fff}
+.btn-red:hover{background:#dc2626}
+.btn-blue{background:#3b82f6;color:#fff}
+.btn-blue:hover{background:#2563eb}
+.btn-gray{background:#334155;color:#f1f5f9}
+.btn-gray:hover{background:#475569}
+table{width:100%;border-collapse:collapse;margin-top:12px;font-size:13px}
+th,td{padding:10px;text-align:right;border-bottom:1px solid #334155}
+th{background:#0f172a;color:#facc15;font-weight:600}
+tr:hover{background:#273449}
+.msg{padding:10px;border-radius:8px;margin-top:10px;font-size:13px;display:none}
+.msg.ok{display:block;background:#14532d;color:#86efac}
+.msg.err{display:block;background:#7f1d1d;color:#fca5a5}
+.msg.info{display:block;background:#1e3a5f;color:#93c5fd}
+.tabs{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
+.tab{padding:8px 20px;border-radius:10px;background:#1e293b;cursor:pointer;font-weight:600;font-size:14px;border:2px solid transparent}
+.tab.active{background:#facc15;color:#0f172a}
+.tab-content{display:none}
+.tab-content.active{display:block}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end}
+.row>*{flex:1;min-width:150px}
+.small-btn{padding:4px 10px;font-size:12px;margin:0}
+</style>
+</head>
+<body>
+<div class="wrap">
+<h1>🔐 لوحة تحكم Hero</h1>
+<div class="sub">إدارة التراخيص والأجهزة والتجارب والإعدادات والدورات</div>
+
+<div class="card" id="loginCard">
+  <h2>🔑 الدخول</h2>
+  <label>Apps Script URL</label>
+  <input type="text" id="appsUrl" placeholder="https://script.google.com/macros/s/.../exec">
+  <label>Admin Secret</label>
+  <input type="password" id="adminSecret" placeholder="كلمة السر">
+  <button class="btn-gold" id="loginBtn">دخول</button>
+  <div class="msg" id="loginMsg"></div>
+</div>
+
+<div id="dashboard" style="display:none">
+  <div class="tabs">
+    <div class="tab active" data-tab="licenses">📋 التراخيص</div>
+    <div class="tab" data-tab="devices">📱 الأجهزة</div>
+    <div class="tab" data-tab="trials">⏳ التجارب</div>
+    <div class="tab" data-tab="config">⚙️ الإعدادات</div>
+    <div class="tab" data-tab="courses">📚 الدورات</div>
+    <div class="tab" data-tab="add">➕ إضافة ترخيص</div>
+  </div>
+
+  <div class="tab-content active" id="tab-licenses">
+    <div class="card">
+      <h2>📋 قائمة التراخيص</h2>
+      <div class="row">
+        <input type="text" id="searchLic" placeholder="🔍 بحث...">
+        <button class="btn-blue" id="refreshLic">🔄 تحديث</button>
+      </div>
+      <div id="licensesTable"></div>
+    </div>
+  </div>
+
+  <div class="tab-content" id="tab-devices">
+    <div class="card">
+      <h2>📱 الأجهزة</h2>
+      <div class="row">
+        <input type="text" id="deviceEmail" placeholder="البريد الإلكتروني">
+        <button class="btn-blue" id="loadDevices">🔍 عرض الأجهزة</button>
+      </div>
+      <div id="devicesTable"></div>
+    </div>
+  </div>
+
+  <div class="tab-content" id="tab-trials">
+    <div class="card">
+      <h2>⏳ التجارب</h2>
+      <button class="btn-blue" id="refreshTrials">🔄 تحديث</button>
+      <div id="trialsTable"></div>
+    </div>
+  </div>
+
+  <div class="tab-content" id="tab-config">
+    <div class="card">
+      <h2>⚙️ الإعدادات (Config)</h2>
+      <p style="color:#94a3b8;font-size:13px;margin-bottom:12px">يمكنك تعديل أي مفتاح ما عدا <code>admin_secret</code> (يُعدّل يدوياً في الشيت).</p>
+      <div class="row">
+        <input type="text" id="configKey" placeholder="المفتاح (مثل client_id)">
+        <input type="text" id="configValue" placeholder="القيمة">
+        <button class="btn-gold" id="saveConfigBtn">💾 حفظ</button>
+      </div>
+      <div class="msg" id="configMsg"></div>
+      <div id="configTable"></div>
+    </div>
+  </div>
+
+  <div class="tab-content" id="tab-courses">
+    <div class="card">
+      <h2>📚 الدورات ومدة التجربة</h2>
+      <div class="row">
+        <input type="text" id="courseId" placeholder="معرف الدورة (مثل 9)">
+        <input type="number" id="courseTrialDays" placeholder="أيام التجربة" value="0">
+        <input type="text" id="courseName" placeholder="اسم الدورة">
+        <button class="btn-gold" id="saveCourseBtn">💾 حفظ</button>
+      </div>
+      <div class="msg" id="courseMsg"></div>
+      <div id="coursesTable"></div>
+    </div>
+  </div>
+
+  <div class="tab-content" id="tab-add">
+    <div class="card">
+      <h2>➕ إضافة / تعديل ترخيص</h2>
+      <label>البريد الإلكتروني *</label>
+      <input type="text" id="licEmail" placeholder="user@gmail.com">
+      <div class="row">
+        <div>
+          <label>اسم العميل</label>
+          <input type="text" id="licCustomer">
+        </div>
+        <div>
+          <label>الهاتف</label>
+          <input type="text" id="licPhone">
+        </div>
+      </div>
+      <div class="row">
+        <div>
+          <label>الدورات (مفصولة بفواصل)</label>
+          <input type="text" id="licCourses" placeholder="9,12,20">
+        </div>
+        <div>
+          <label>حد الأجهزة</label>
+          <input type="number" id="licDevices" value="3">
+        </div>
+        <div>
+          <label>تاريخ الانتهاء (YYYY-MM-DD)</label>
+          <input type="text" id="licExpires" placeholder="2027-09-21">
+        </div>
+        <div>
+          <label>الحالة</label>
+          <select id="licStatus">
+            <option value="active">active</option>
+            <option value="revoked">revoked</option>
+            <option value="suspended">suspended</option>
+          </select>
+        </div>
+      </div>
+      <label>ملاحظات</label>
+      <input type="text" id="licNotes">
+      <button class="btn-gold" id="saveLicBtn">💾 حفظ</button>
+      <div class="msg" id="saveMsg"></div>
+    </div>
+  </div>
+</div>
+
+</div>
+<script>
+(function(){
+"use strict";
+var appsUrl="";
+var adminSecret="";
+
+function api(action,extra){
+  var body=Object.assign({action:action,admin_secret:adminSecret},extra||{});
+  return fetch(appsUrl,{
+    method:'POST',
+    headers:{'Content-Type':'text/plain;charset=utf-8'},
+    body:JSON.stringify(body)
+  }).then(function(r){return r.json();});
+}
+
+function showMsg(el,text,type){
+  el.textContent=text;el.className='msg '+type;el.style.display='block';
+  setTimeout(function(){el.style.display='none';},5000);
+}
+
+document.getElementById('loginBtn').onclick=function(){
+  appsUrl=document.getElementById('appsUrl').value.trim();
+  adminSecret=document.getElementById('adminSecret').value.trim();
+  if(!appsUrl||!adminSecret){showMsg(document.getElementById('loginMsg'),'⚠️ أدخل البيانات','err');return;}
+  api('admin_list').then(function(res){
+    if(!res.ok){showMsg(document.getElementById('loginMsg'),'❌ '+(res.error||'فشل'),'err');return;}
+    document.getElementById('loginCard').style.display='none';
+    document.getElementById('dashboard').style.display='block';
+    renderLicenses(res.licenses);
+    renderTrials(res.trials);
+    loadConfig();
+    loadCourses();
+  });
+};
+
+document.querySelectorAll('.tab').forEach(function(t){
+  t.onclick=function(){
+    document.querySelectorAll('.tab').forEach(function(x){x.classList.remove('active');});
+    this.classList.add('active');
+    var tab=this.dataset.tab;
+    document.querySelectorAll('.tab-content').forEach(function(c){c.classList.remove('active');});
+    document.getElementById('tab-'+tab).classList.add('active');
+    if(tab==='config')loadConfig();
+    if(tab==='courses')loadCourses();
+  };
+});
+
+function renderLicenses(list){
+  if(!list||!list.length){document.getElementById('licensesTable').innerHTML='<p style="color:#64748b">لا توجد تراخيص</p>';return;}
+  var html='<table><tr><th>البريد</th><th>العميل</th><th>الدورات</th><th>الأجهزة</th><th>ينتهي</th><th>الحالة</th><th>إجراءات</th></tr>';
+  list.forEach(function(l){
+    html+='<tr>'+
+      '<td style="font-family:monospace;font-size:12px">'+l.email+'</td>'+
+      '<td>'+(l.customer||'-')+'</td>'+
+      '<td>'+(l.courses||'-')+'</td>'+
+      '<td>'+(l.devices_limit||3)+'</td>'+
+      '<td>'+(l.expires||'-')+'</td>'+
+      '<td>'+(l.status||'-')+'</td>'+
+      '<td>'+
+        '<button class="btn-blue small-btn" onclick="editLic(\''+l.email+'\')">✏️</button> '+
+        '<button class="btn-red small-btn" onclick="delLic(\''+l.email+'\')">🗑️</button> '+
+        '<button class="btn-gray small-btn" onclick="viewDev(\''+l.email+'\')">📱</button>'+
+      '</td>'+
+    '</tr>';
+  });
+  html+='</table>';
+  document.getElementById('licensesTable').innerHTML=html;
+}
+
+window.editLic=function(email){
+  api('admin_list').then(function(res){
+    var l=res.licenses.find(function(x){return x.email===email;});
+    if(!l)return;
+    document.querySelector('.tab[data-tab="add"]').click();
+    document.getElementById('licEmail').value=l.email||'';
+    document.getElementById('licCustomer').value=l.customer||'';
+    document.getElementById('licPhone').value=l.phone||'';
+    document.getElementById('licCourses').value=l.courses||'';
+    document.getElementById('licDevices').value=l.devices_limit||3;
+    document.getElementById('licExpires').value=l.expires||'';
+    document.getElementById('licStatus').value=l.status||'active';
+    document.getElementById('licNotes').value=l.notes||'';
+  });
+};
+
+window.delLic=function(email){
+  if(!confirm('حذف '+email+'؟'))return;
+  api('admin_delete_license',{email:email}).then(function(res){
+    if(res.ok){location.reload();}else{alert('فشل: '+res.error);}
+  });
+};
+
+window.viewDev=function(email){
+  document.querySelector('.tab[data-tab="devices"]').click();
+  document.getElementById('deviceEmail').value=email;
+  loadDevices();
+};
+
+window.removeDev=function(email,deviceId){
+  if(!confirm('إلغاء هذا الجهاز؟'))return;
+  api('admin_remove_device',{email:email,device_id:deviceId}).then(function(res){
+    if(res.ok){loadDevices();}else{alert('فشل: '+res.error);}
+  });
+};
+
+window.resetTrial=function(email,courseId){
+  if(!confirm('إعادة تعيين التجربة؟'))return;
+  api('admin_reset_trial',{email:email,course_id:courseId}).then(function(res){
+    if(res.ok){api('admin_list').then(function(r){renderTrials(r.trials);});}
+  });
+};
+
+window.delConfig=function(key){
+  if(!confirm('حذف '+key+'؟'))return;
+  api('admin_config_delete',{key:key}).then(function(res){
+    if(res.ok){loadConfig();}else{alert('فشل: '+res.error);}
+  });
+};
+
+window.delCourse=function(courseId){
+  if(!confirm('حذف الدورة '+courseId+'؟'))return;
+  api('admin_courses_delete',{course_id:courseId}).then(function(res){
+    if(res.ok){loadCourses();}else{alert('فشل: '+res.error);}
+  });
+};
+
+function loadDevices(){
+  var email=document.getElementById('deviceEmail').value.trim();
+  if(!email)return;
+  api('admin_devices',{email:email}).then(function(res){
+    if(!res.ok){document.getElementById('devicesTable').innerHTML='<p style="color:#ef4444">فشل</p>';return;}
+    if(!res.devices.length){document.getElementById('devicesTable').innerHTML='<p style="color:#64748b">لا توجد أجهزة</p>';return;}
+    var html='<table><tr><th>Device ID</th><th>Course</th><th>آخر ظهور</th><th>الحالة</th><th>إجراء</th></tr>';
+    res.devices.forEach(function(d){
+      var last=d.last_seen?new Date(d.last_seen).toLocaleString('ar-EG'):'-';
+      html+='<tr>'+
+        '<td style="font-family:monospace;font-size:11px">'+d.device_id+'</td>'+
+        '<td>'+(d.course_id||'-')+'</td>'+
+        '<td>'+last+'</td>'+
+        '<td>'+(d.status||'-')+'</td>'+
+        '<td>'+(d.status==='active'?'<button class="btn-red small-btn" onclick="removeDev(\''+email+'\',\''+d.device_id+'\')">🗑️ إلغاء</button>':'')+'</td>'+
+      '</tr>';
+    });
+    html+='</table>';
+    document.getElementById('devicesTable').innerHTML=html;
+  });
+}
+
+function renderTrials(list){
+  if(!list||!list.length){document.getElementById('trialsTable').innerHTML='<p style="color:#64748b">لا توجد تجارب</p>';return;}
+  var html='<table><tr><th>البريد</th><th>الدورة</th><th>يبدأ</th><th>ينتهي</th><th>الحالة</th><th>إجراء</th></tr>';
+  list.forEach(function(t){
+    html+='<tr>'+
+      '<td style="font-family:monospace;font-size:12px">'+t.email+'</td>'+
+      '<td>'+(t.course_id||'-')+'</td>'+
+      '<td>'+(t.started_at?new Date(t.started_at).toLocaleDateString('ar-EG'):'-')+'</td>'+
+      '<td>'+(t.expires_at?new Date(t.expires_at).toLocaleDateString('ar-EG'):'-')+'</td>'+
+      '<td>'+(t.status||'-')+'</td>'+
+      '<td><button class="btn-red small-btn" onclick="resetTrial(\''+t.email+'\',\''+t.course_id+'\')">🔄</button></td>'+
+    '</tr>';
+  });
+  html+='</table>';
+  document.getElementById('trialsTable').innerHTML=html;
+}
+
+function loadConfig(){
+  api('admin_config_list').then(function(res){
+    if(!res.ok)return;
+    var list=res.config||[];
+    if(!list.length){document.getElementById('configTable').innerHTML='<p style="color:#64748b">Config فارغة</p>';return;}
+    var html='<table><tr><th>المفتاح</th><th>القيمة</th><th>إجراء</th></tr>';
+    list.forEach(function(c){
+      var k=c.key||'';var v=c.value||'';
+      var disabled=(k.toLowerCase()==='admin_secret');
+      html+='<tr>'+
+        '<td style="font-family:monospace">'+k+'</td>'+
+        '<td style="font-family:monospace;font-size:12px;word-break:break-all">'+String(v).substring(0,80)+(String(v).length>80?'...':'')+'</td>'+
+        '<td>'+ (disabled?'<span style="color:#94a3b8;font-size:12px">محمي</span>':'<button class="btn-red small-btn" onclick="delConfig(\''+k+'\')">🗑️</button>') +'</td>'+
+      '</tr>';
+    });
+    html+='</table>';
+    document.getElementById('configTable').innerHTML=html;
+  });
+}
+
+function loadCourses(){
+  api('admin_courses_list').then(function(res){
+    if(!res.ok)return;
+    var list=res.courses||[];
+    if(!list.length){document.getElementById('coursesTable').innerHTML='<p style="color:#64748b">لا توجد دورات</p>';return;}
+    var html='<table><tr><th>معرف الدورة</th><th>أيام التجربة</th><th>الاسم</th><th>إجراء</th></tr>';
+    list.forEach(function(c){
+      html+='<tr>'+
+        '<td style="font-family:monospace">'+(c.course_id||'-')+'</td>'+
+        '<td>'+(c.trial_days||0)+'</td>'+
+        '<td>'+(c.name||'-')+'</td>'+
+        '<td><button class="btn-red small-btn" onclick="delCourse(\''+c.course_id+'\')">🗑️</button></td>'+
+      '</tr>';
+    });
+    html+='</table>';
+    document.getElementById('coursesTable').innerHTML=html;
+  });
+}
+
+document.getElementById('refreshLic').onclick=function(){
+  api('admin_list').then(function(res){if(res.ok)renderLicenses(res.licenses);});
+};
+document.getElementById('refreshTrials').onclick=function(){
+  api('admin_list').then(function(res){if(res.ok)renderTrials(res.trials);});
+};
+document.getElementById('loadDevices').onclick=loadDevices;
+
+document.getElementById('saveLicBtn').onclick=function(){
+  var data={
+    email:document.getElementById('licEmail').value.trim(),
+    customer:document.getElementById('licCustomer').value.trim(),
+    phone:document.getElementById('licPhone').value.trim(),
+    courses:document.getElementById('licCourses').value.trim(),
+    devices_limit:document.getElementById('licDevices').value.trim(),
+    expires:document.getElementById('licExpires').value.trim(),
+    status:document.getElementById('licStatus').value,
+    notes:document.getElementById('licNotes').value.trim()
+  };
+  if(!data.email){showMsg(document.getElementById('saveMsg'),'⚠️ البريد مطلوب','err');return;}
+  // تحقق من صيغة التاريخ
+  if(data.expires && !/^\d{4}-\d{1,2}-\d{1,2}$/.test(data.expires)){
+    if(!confirm('صيغة التاريخ المفضلة YYYY-MM-DD. المتابعة بأي حال؟')) return;
+  }
+  api('admin_save_license',data).then(function(res){
+    if(res.ok){showMsg(document.getElementById('saveMsg'),'✅ تم الحفظ','ok');}
+    else{showMsg(document.getElementById('saveMsg'),'❌ '+(res.error||'فشل'),'err');}
+  });
+};
+
+document.getElementById('saveConfigBtn').onclick=function(){
+  var key=document.getElementById('configKey').value.trim();
+  var value=document.getElementById('configValue').value.trim();
+  if(!key){showMsg(document.getElementById('configMsg'),'⚠️ المفتاح مطلوب','err');return;}
+  api('admin_config_save',{key:key,value:value}).then(function(res){
+    if(res.ok){
+      showMsg(document.getElementById('configMsg'),'✅ تم الحفظ','ok');
+      document.getElementById('configKey').value='';
+      document.getElementById('configValue').value='';
+      loadConfig();
+    } else {
+      showMsg(document.getElementById('configMsg'),'❌ '+(res.error||'فشل'),'err');
+    }
+  });
+};
+
+document.getElementById('saveCourseBtn').onclick=function(){
+  var courseId=document.getElementById('courseId').value.trim();
+  if(!courseId){showMsg(document.getElementById('courseMsg'),'⚠️ معرف الدورة مطلوب','err');return;}
+  api('admin_courses_save',{
+    course_id:courseId,
+    trial_days:document.getElementById('courseTrialDays').value,
+    name:document.getElementById('courseName').value.trim()
+  }).then(function(res){
+    if(res.ok){
+      showMsg(document.getElementById('courseMsg'),'✅ تم الحفظ','ok');
+      document.getElementById('courseId').value='';
+      document.getElementById('courseTrialDays').value=0;
+      document.getElementById('courseName').value='';
+      loadCourses();
+    } else {
+      showMsg(document.getElementById('courseMsg'),'❌ '+(res.error||'فشل'),'err');
+    }
+  });
+};
+
+})();
+</script>
+</body>
+</html>
