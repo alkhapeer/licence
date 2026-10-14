@@ -2282,10 +2282,31 @@ function extractData(txt, varName){
   var start = match.index + match[0].length;
   var jsonStart = txt.indexOf('{', start);
   if (jsonStart === -1) return null;
-  var jsonEnd = txt.lastIndexOf('}');
-  if (jsonEnd === -1 || jsonEnd < jsonStart) return null;
-  try { return JSON.parse(txt.substring(jsonStart, jsonEnd + 1)); }
-  catch(e){ console.warn('JSON parse error for '+varName+':', e); return null; }
+
+  // إيجاد قوس الإغلاق المطابق (مع احترام النصوص المتداخلة والأقواس)
+  var depth = 0, inString = false, escape = false, jsonEnd = -1;
+  for (var i = jsonStart; i < txt.length; i++){
+    var c = txt.charAt(i);
+    if (escape){ escape = false; continue; }
+    if (c === '\\'){ escape = true; continue; }
+    if (c === '"'){ inString = !inString; continue; }
+    if (inString) continue;
+    if (c === '{') depth++;
+    else if (c === '}'){ depth--; if (depth === 0){ jsonEnd = i; break; } }
+  }
+  if (jsonEnd === -1) return null;
+
+  var objStr = txt.substring(jsonStart, jsonEnd + 1);
+
+  // المحاولة 1: JSON صارم
+  try { return JSON.parse(objStr); } catch(e){}
+
+  // المحاولة 2: JavaScript object literal (مثل الملف الحالي على GitHub)
+  try { return (new Function('return (' + objStr + ')'))(); }
+  catch(e2){
+    console.warn('Parse error for '+varName+':', e2);
+    return null;
+  }
 }
 
 async function loadFromGitHub(){
