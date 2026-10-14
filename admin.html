@@ -522,14 +522,6 @@ tbody tr:hover{background:rgba(99,102,241,.04)}
 </div>
 <div id="a-wysiwyg" class="wysiwyg-editor" contenteditable="true" data-placeholder="اكتب هنا، أو الصق محتوى جاهزًا وسيتحوّل تلقائيًا إلى فقرات منسّقة..."></div>
 <textarea id="a-content" class="article-body code" hidden></textarea>
-            <div class="preview-toggle">
-              <button type="button" id="tab-write" class="active" onclick="ADMIN.switchEditorTab('write')">✏️ كتابة</button>
-              <button type="button" id="tab-preview" onclick="ADMIN.switchEditorTab('preview')">👁️ معاينة</button>
-            </div>
-            <div class="field">
-              <textarea id="a-content" class="article-body code" placeholder="<p>محتوى المقال هنا...</p>" oninput="ADMIN.syncPreview()"></textarea>
-              <div id="a-preview" class="preview-panel" hidden></div>
-            </div>
 
             <h3 style="margin-top:24px">الحالة</h3>
             <div class="check-row">
@@ -1399,14 +1391,13 @@ function newArticle(){
   $('#a-c1').value = '#6366F1';
   $('#a-c2').value = '#A855F7';
   $('#a-date').value = new Date().toISOString().slice(0,10);
- $('#a-content').value = '';
-$('#a-wysiwyg').innerHTML = '';
-setEditMode('wysiwyg');
+  $('#a-content').value = '';
+  $('#a-wysiwyg').innerHTML = '';
+  setEditMode('wysiwyg');
   $('#a-featured').checked = false;
   $('#article-editor-title').textContent = '➕ إضافة مقال جديد';
   articleTags = [];
   renderArticleTags();
-  switchEditorTab('write');
   goSection('article-editor');
 }
 
@@ -1430,7 +1421,6 @@ setEditMode('wysiwyg');
   articleTags = (a.tags || []).slice();
   renderArticleTags();
   $('#article-editor-title').textContent = '✏️ تعديل: ' + a.title;
-  switchEditorTab('write');
   goSection('article-editor');
 }
 
@@ -1958,6 +1948,20 @@ function bindUI(){
     if (DIRTY_DATA || DIRTY_ARTICLES){ e.preventDefault(); e.returnValue = ''; }
   });
 }
+
+function extractData(txt, varName){
+  if (!txt) return null;
+  var re = new RegExp('window\\.' + varName + '\\s*=\\s*');
+  var match = txt.match(re);
+  if (!match) return null;
+  var start = match.index + match[0].length;
+  var jsonStart = txt.indexOf('{', start);
+  if (jsonStart === -1) return null;
+  var jsonEnd = txt.lastIndexOf('}');
+  if (jsonEnd === -1 || jsonEnd < jsonStart) return null;
+  try { return JSON.parse(txt.substring(jsonStart, jsonEnd + 1)); }
+  catch(e){ console.warn('JSON parse error for '+varName+':', e); return null; }
+}
 /* ============================================================
    إعادة تحميل البيانات من GitHub مباشرة (تتجاوز الكاش)
    ============================================================ */
@@ -1976,10 +1980,9 @@ async function loadFromGitHub(){
   try {
     var r1 = await fetch(base + (cfg.path || 'data.js') + '?t=' + Date.now(), { cache: 'no-store' });
     if (r1.ok){
-      var txt1 = await r1.text();
-      var m1 = txt1.match(/window\.HERO_DATA\s*=\s*(\{[\s\S]*\});?\s*$/);
-      if (m1){
-        var d1 = JSON.parse(m1[1]);
+            var txt1 = await r1.text();
+      var d1 = extractData(txt1, 'HERO_DATA');
+      if (d1){
         STATE.categories = d1.categories || [];
         STATE.products   = d1.products   || [];
         STATE.settings   = Object.assign(STATE.settings, d1.settings || {});
@@ -1996,10 +1999,9 @@ async function loadFromGitHub(){
   try {
     var r2 = await fetch(base + (cfg.articlesPath || 'articles.js') + '?t=' + Date.now(), { cache: 'no-store' });
     if (r2.ok){
-      var txt2 = await r2.text();
-      var m2 = txt2.match(/window\.HERO_ARTICLES\s*=\s*(\{[\s\S]*\});?\s*$/);
-      if (m2){
-        var d2 = JSON.parse(m2[1]);
+            var txt2 = await r2.text();
+      var d2 = extractData(txt2, 'HERO_ARTICLES');
+      if (d2){
         ARTICLES_STATE.articles = d2.articles || [];
         console.log('[load] articles.js ✓ — ' + ARTICLES_STATE.articles.length + ' مقال');
         loaded = true;
@@ -2038,12 +2040,11 @@ async function init(){
   renderArticleTags();
   fillCategorySelect();
 
-  // ⭐ إذا كانت البيانات فارغة (script tags فشلت)، حاول جلبها من GitHub
   var cfg = getGH();
-  var stateEmpty = (STATE.products.length === 0 && STATE.categories.length === 0 && ARTICLES_STATE.articles.length === 0);
 
-  if (cfg && cfg.token && stateEmpty){
-    console.log('[init] الحالة فارغة — جاري التحميل من GitHub...');
+  // ⭐ إذا كان GitHub مضبوطًا — اجلب البيانات منه دائمًا (تجاوز الكاش + الكاش المدفوع)
+  if (cfg && cfg.token){
+    console.log('[init] جاري تحميل البيانات من GitHub...');
     var btn = $('#publish-btn');
     if (btn) btn.innerHTML = '<span class="loader"></span> تحميل...';
     var ok = await loadFromGitHub();
@@ -2051,7 +2052,9 @@ async function init(){
     if (ok){
       fillCategorySelect();
       updateStats();
-      toast('✅ تم تحميل البيانات من GitHub — ' + STATE.products.length + ' منتج، ' + ARTICLES_STATE.articles.length + ' مقال', 'ok');
+      console.log('[init] تم التحميل — منتجات: ' + STATE.products.length + ' · تصنيفات: ' + STATE.categories.length + ' · مقالات: ' + ARTICLES_STATE.articles.length);
+    } else {
+      console.warn('[init] فشل التحميل من GitHub — سيتم استخدام البيانات المحلية');
     }
   }
 
