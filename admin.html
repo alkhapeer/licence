@@ -2035,27 +2035,35 @@ async function reloadFromGitHub(){
 }
   
 async function init(){
+  console.log('[init] بدء التهيئة...');
   bindUI();
   renderTags();
   renderArticleTags();
   fillCategorySelect();
 
   var cfg = getGH();
+  console.log('[init] إعدادات GitHub:', cfg ? '✓' : '❌');
 
-  // ⭐ إذا كان GitHub مضبوطًا — اجلب البيانات منه دائمًا (تجاوز الكاش + الكاش المدفوع)
+  // ⭐ دائماً اجلب البيانات من GitHub إذا كان الاتصال مضبوطاً
+  // (تجاوز الكاش + يتضمن data.js و articles.js)
   if (cfg && cfg.token){
     console.log('[init] جاري تحميل البيانات من GitHub...');
     var btn = $('#publish-btn');
     if (btn) btn.innerHTML = '<span class="loader"></span> تحميل...';
+    
     var ok = await loadFromGitHub();
+    
     if (btn) btn.innerHTML = '🚀 نشر';
     if (ok){
       fillCategorySelect();
       updateStats();
-      console.log('[init] تم التحميل — منتجات: ' + STATE.products.length + ' · تصنيفات: ' + STATE.categories.length + ' · مقالات: ' + ARTICLES_STATE.articles.length);
+      console.log('[init] ✓ تم التحميل — منتجات:', STATE.products.length, '· تصنيفات:', STATE.categories.length, '· مقالات:', ARTICLES_STATE.articles.length);
+      toast('✅ تم التحميل — ' + STATE.products.length + ' منتج، ' + ARTICLES_STATE.articles.length + ' مقال', 'ok');
     } else {
-      console.warn('[init] فشل التحميل من GitHub — سيتم استخدام البيانات المحلية');
+      console.warn('[init] ⚠️ فشل التحميل من GitHub — سيتم استخدام البيانات المحلية');
     }
+  } else {
+    console.log('[init] ℹ️ لا يوجد اتصال GitHub — سيتم استخدام البيانات المحلية');
   }
 
   // ضمان وجود تصنيف افتراضي (حتى لا يعلق المستخدم)
