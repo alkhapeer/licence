@@ -703,9 +703,10 @@ tbody tr:hover{background:rgba(99,102,241,.04)}
           </div>
 
           <div style="display:flex;gap:8px;margin-top:20px;flex-wrap:wrap">
-            <button class="btn btn-primary" onclick="ADMIN.saveGitHub()">💾 حفظ الإعدادات</button>
-            <button class="btn btn-outline" onclick="ADMIN.testGitHub()">🧪 اختبار الاتصال</button>
-            <button class="btn btn-danger" onclick="ADMIN.clearGitHub()">🗑️ حذف الإعدادات</button>
+              <button class="btn btn-primary" onclick="ADMIN.saveGitHub()">💾 حفظ الإعدادات</button>
+              <button class="btn btn-outline" onclick="ADMIN.testGitHub()">🧪 اختبار الاتصال</button>
+              <button class="btn btn-outline" onclick="ADMIN.reloadFromGitHub()">🔄 إعادة تحميل من GitHub</button>
+              <button class="btn btn-danger" onclick="ADMIN.clearGitHub()">🗑️ حذف الإعدادات</button>
           </div>
         </div>
 
@@ -1957,13 +1958,117 @@ function bindUI(){
     if (DIRTY_DATA || DIRTY_ARTICLES){ e.preventDefault(); e.returnValue = ''; }
   });
 }
+/* ============================================================
+   إعادة تحميل البيانات من GitHub مباشرة (تتجاوز الكاش)
+   ============================================================ */
+async function loadFromGitHub(){
+  var cfg = getGH();
+  if (!cfg || !cfg.owner || !cfg.repo){
+    console.warn('[load] GitHub not configured');
+    return false;
+  }
 
-function init(){
+  var branch = cfg.branch || 'main';
+  var base = 'https://raw.githubusercontent.com/' + cfg.owner + '/' + cfg.repo + '/' + branch + '/';
+  var loaded = false;
+
+  // جلب data.js
+  try {
+    var r1 = await fetch(base + (cfg.path || 'data.js') + '?t=' + Date.now(), { cache: 'no-store' });
+    if (r1.ok){
+      var txt1 = await r1.text();
+      var m1 = txt1.match(/window\.HERO_DATA\s*=\s*(\{[\s\S]*\});?\s*$/);
+      if (m1){
+        var d1 = JSON.parse(m1[1]);
+        STATE.categories = d1.categories || [];
+        STATE.products   = d1.products   || [];
+        STATE.settings   = Object.assign(STATE.settings, d1.settings || {});
+        STATE.analytics  = Object.assign(STATE.analytics, d1.analytics || {});
+        console.log('[load] data.js ✓ — ' + STATE.products.length + ' منتج، ' + STATE.categories.length + ' تصنيف');
+        loaded = true;
+      }
+    } else {
+      console.warn('[load] data.js status:', r1.status);
+    }
+  } catch(e){ console.warn('[load] data.js fetch error:', e); }
+
+  // جلب articles.js
+  try {
+    var r2 = await fetch(base + (cfg.articlesPath || 'articles.js') + '?t=' + Date.now(), { cache: 'no-store' });
+    if (r2.ok){
+      var txt2 = await r2.text();
+      var m2 = txt2.match(/window\.HERO_ARTICLES\s*=\s*(\{[\s\S]*\});?\s*$/);
+      if (m2){
+        var d2 = JSON.parse(m2[1]);
+        ARTICLES_STATE.articles = d2.articles || [];
+        console.log('[load] articles.js ✓ — ' + ARTICLES_STATE.articles.length + ' مقال');
+        loaded = true;
+      }
+    } else {
+      console.warn('[load] articles.js status:', r2.status);
+    }
+  } catch(e){ console.warn('[load] articles.js fetch error:', e); }
+
+  return loaded;
+}
+
+/* إعادة تحميل يدوية (مع إعادة تحديث كل الواجهة) */
+async function reloadFromGitHub(){
+  toast('🔄 جاري إعادة التحميل من GitHub...');
+  var ok = await loadFromGitHub();
+  if (ok){
+    fillCategorySelect();
+    renderTags();
+    renderArticleTags();
+    updateStats();
+    refreshDashboard();
+    // إذا كنا في قسم المنتجات أو المقالات، أعِد الرسم
+    if (!$('[data-sec="products"]').hidden) renderProductsTable();
+    if (!$('[data-sec="articles"]').hidden) renderArticlesTable();
+    if (!$('[data-sec="categories"]').hidden) renderCategories();
+    toast('✅ تم التحديث — ' + STATE.products.length + ' منتج، ' + ARTICLES_STATE.articles.length + ' مقال', 'ok');
+  } else {
+    toast('❌ فشل التحميل — تحقق من إعدادات GitHub', 'err');
+  }
+}
+  
+async function init(){
   bindUI();
   renderTags();
-  setupSmartPaste();
   renderArticleTags();
   fillCategorySelect();
+
+  // ⭐ إذا كانت البيانات فارغة (script tags فشلت)، حاول جلبها من GitHub
+  var cfg = getGH();
+  var stateEmpty = (STATE.products.length === 0 && STATE.categories.length === 0 && ARTICLES_STATE.articles.length === 0);
+
+  if (cfg && cfg.token && stateEmpty){
+    console.log('[init] الحالة فارغة — جاري التحميل من GitHub...');
+    var btn = $('#publish-btn');
+    if (btn) btn.innerHTML = '<span class="loader"></span> تحميل...';
+    var ok = await loadFromGitHub();
+    if (btn) btn.innerHTML = '🚀 نشر';
+    if (ok){
+      fillCategorySelect();
+      updateStats();
+      toast('✅ تم تحميل البيانات من GitHub — ' + STATE.products.length + ' منتج، ' + ARTICLES_STATE.articles.length + ' مقال', 'ok');
+    }
+  }
+
+  // ضمان وجود تصنيف افتراضي (حتى لا يعلق المستخدم)
+  if (STATE.categories.length === 0){
+    STATE.categories = [
+      {id:'tools',      name:'الأدوات',       icon:'🛠️'},
+      {id:'games',      name:'الألعاب',       icon:'🎮'},
+      {id:'education',  name:'التعليم',       icon:'📚'},
+      {id:'design',     name:'التصميم',       icon:'🎨'},
+      {id:'digital-products', name:'منتجات رقمية', icon:'📦'},
+      {id:'services',   name:'الخدمات',       icon:'💼'}
+    ];
+    fillCategorySelect();
+    console.log('[init] تم تحميل التصنيفات الافتراضية');
+  }
+
   updateStats();
   updatePublishStatus();
   refreshDashboard();
@@ -1993,6 +2098,7 @@ window.ADMIN = {
   saveSEO: saveSEO, saveAnalytics: saveAnalytics,
   // github
   saveGitHub: saveGitHub, testGitHub: testGitHub, clearGitHub: clearGitHub,
+  reloadFromGitHub: reloadFromGitHub,
   // raw
   loadRaw: loadRaw, applyRaw: applyRaw, downloadBackup: downloadBackup, switchRawTab: switchRawTab,
   // danger
