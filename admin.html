@@ -26,7 +26,6 @@ code{background:var(--surface2);padding:1px 6px;border-radius:5px;font-family:ui
 .layout{display:grid;grid-template-columns:260px 1fr;min-height:100vh}
 @media(max-width:900px){.layout{grid-template-columns:1fr}}
 
-/* Sidebar */
 .sidebar{background:var(--surface);border-inline-end:1px solid var(--line);display:flex;flex-direction:column;position:sticky;top:0;height:100vh;overflow-y:auto}
 @media(max-width:900px){.sidebar{position:fixed;inset-block:0;inset-inline-start:0;width:260px;z-index:100;transform:translateX(-100%);transition:.3s}}
 @media(max-width:900px){.sidebar.open{transform:translateX(0)}}
@@ -43,7 +42,6 @@ code{background:var(--surface2);padding:1px 6px;border-radius:5px;font-family:ui
 .sb-sep{padding:14px 12px 6px;font-size:10.5px;font-weight:800;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase}
 .sb-footer{padding:14px;border-top:1px solid var(--line);font-size:11.5px;color:var(--muted);text-align:center}
 
-/* Main */
 .main{display:flex;flex-direction:column;min-width:0}
 .topbar{background:rgba(26,26,42,.85);backdrop-filter:blur(14px);border-bottom:1px solid var(--line);padding:14px 24px;display:flex;align-items:center;gap:14px;position:sticky;top:0;z-index:50}
 .hamburger{display:none;width:40px;height:40px;border-radius:10px;background:var(--surface2);font-size:18px}
@@ -156,7 +154,6 @@ tbody tr:hover{background:rgba(99,102,241,.04)}
 .loader{display:inline-block;width:14px;height:14px;border:2px solid rgba(255,255,255,.25);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;vertical-align:-2px}
 @keyframes spin{to{transform:rotate(360deg)}}
 
-/* Editor preview */
 .editor-toolbar{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px}
 .editor-toolbar button{padding:6px 11px;border-radius:8px;background:var(--surface2);border:1px solid var(--line);font-size:12px;font-weight:700;color:var(--muted);transition:.15s}
 .editor-toolbar button:hover{color:var(--text);border-color:var(--primary)}
@@ -170,7 +167,7 @@ tbody tr:hover{background:rgba(99,102,241,.04)}
 .preview-panel pre{background:var(--bg);padding:14px;border-radius:10px;overflow-x:auto;direction:ltr;text-align:left;margin:14px 0}
 .preview-panel pre code{background:transparent;padding:0}
 .preview-panel img{max-width:100%;border-radius:10px;margin:10px 0}
-/* ============ WYSIWYG EDITOR ============ */
+
 .edit-mode-toggle{display:flex;gap:6px;margin-bottom:10px}
 .edit-mode-toggle button{padding:7px 14px;border-radius:8px;background:var(--surface2);border:1px solid var(--line);font-size:12.5px;font-weight:700;color:var(--muted);transition:.15s}
 .edit-mode-toggle button.active{background:rgba(99,102,241,.15);color:var(--primary);border-color:var(--primary)}
@@ -203,7 +200,6 @@ tbody tr:hover{background:rgba(99,102,241,.04)}
 
 <div class="layout">
 
-  <!-- SIDEBAR -->
   <aside class="sidebar" id="sidebar">
     <div class="sb-brand">
       <span class="sb-mark">⚙️</span>
@@ -223,7 +219,7 @@ tbody tr:hover{background:rgba(99,102,241,.04)}
       <a class="sb-link" data-sec="articles"><span class="ico">📝</span> المقالات <span class="badge" id="sb-art-count">0</span></a>
       <a class="sb-link" data-sec="article-editor"><span class="ico">➕</span> إضافة مقال</a>
 
-            <div class="sb-sep">HeroGames</div>
+      <div class="sb-sep">HeroGames</div>
       <a class="sb-link" data-sec="games"><span class="ico">🎮</span> الألعاب <span class="badge" id="sb-game-count">0</span></a>
       <a class="sb-link" data-sec="game-editor"><span class="ico">➕</span> إضافة لعبة</a>
       <a class="sb-link" data-sec="game-settings"><span class="ico">⚙️</span> إعدادات HeroGames</a>
@@ -244,12 +240,11 @@ tbody tr:hover{background:rgba(99,102,241,.04)}
     </nav>
 
     <div class="sb-footer">
-      <div>الإصدار 3.0</div>
+      <div>الإصدار 4.0</div>
       <a href="index.html" target="_blank" style="color:var(--primary);font-weight:700">← عرض المتجر ↗</a>
     </div>
   </aside>
 
-  <!-- MAIN -->
   <main class="main">
     <header class="topbar">
       <button class="hamburger" id="hamburger">☰</button>
@@ -263,7 +258,7 @@ tbody tr:hover{background:rgba(99,102,241,.04)}
 
     <div class="content">
 
-      <!-- ============ DASHBOARD ============ -->
+      <!-- DASHBOARD -->
       <section class="section" data-sec="dashboard">
         <div class="stats" style="margin-bottom:20px">
           <div class="stat"><span class="ico">📦</span><div class="lbl">المنتجات</div><div class="val" id="st-products">0</div><div class="sub" id="st-products-sub">—</div></div>
@@ -278,8 +273,10 @@ tbody tr:hover{background:rgba(99,102,241,.04)}
           <div style="display:flex;gap:8px;flex-wrap:wrap">
             <button class="btn btn-primary" onclick="ADMIN.goSection('editor')">➕ إضافة منتج</button>
             <button class="btn btn-primary" onclick="ADMIN.newArticle()">📝 إضافة مقال</button>
+            <button class="btn btn-primary" onclick="ADMIN.newGame()">🎮 إضافة لعبة</button>
             <button class="btn btn-outline" onclick="ADMIN.goSection('products')">📦 إدارة المنتجات</button>
             <button class="btn btn-outline" onclick="ADMIN.goSection('articles')">📝 إدارة المقالات</button>
+            <button class="btn btn-outline" onclick="ADMIN.goSection('games')">🎮 إدارة الألعاب</button>
             <button class="btn btn-outline" onclick="ADMIN.goSection('github')">☁️ إعداد النشر</button>
             <a class="btn btn-outline" href="index.html" target="_blank">👁️ عرض المتجر ↗</a>
           </div>
@@ -301,7 +298,7 @@ tbody tr:hover{background:rgba(99,102,241,.04)}
         </div>
       </section>
 
-      <!-- ============ PRODUCTS ============ -->
+      <!-- PRODUCTS -->
       <section class="section" data-sec="products" hidden>
         <div class="card">
           <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center;justify-content:space-between;margin-bottom:14px">
@@ -344,11 +341,10 @@ tbody tr:hover{background:rgba(99,102,241,.04)}
         </div>
       </section>
 
-      <!-- ============ PRODUCT EDITOR ============ -->
+      <!-- PRODUCT EDITOR -->
       <section class="section" data-sec="editor" hidden>
         <form id="product-form" onsubmit="ADMIN.saveProduct(event)">
           <input type="hidden" id="f-editing">
-
           <div class="card">
             <h2 id="editor-title">➕ إضافة منتج جديد</h2>
             <p class="card-desc">املأ الحقول ثم اضغط حفظ. لا تنسَ النشر بعد الانتهاء.</p>
@@ -409,7 +405,7 @@ tbody tr:hover{background:rgba(99,102,241,.04)}
         </form>
       </section>
 
-      <!-- ============ CATEGORIES ============ -->
+      <!-- CATEGORIES -->
       <section class="section" data-sec="categories" hidden>
         <div class="card">
           <h2>🏷️ التصنيفات</h2>
@@ -427,7 +423,7 @@ tbody tr:hover{background:rgba(99,102,241,.04)}
         </div>
       </section>
 
-      <!-- ============ ARTICLES LIST ============ -->
+      <!-- ARTICLES LIST -->
       <section class="section" data-sec="articles" hidden>
         <div class="card">
           <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center;justify-content:space-between;margin-bottom:14px">
@@ -472,11 +468,10 @@ tbody tr:hover{background:rgba(99,102,241,.04)}
         </div>
       </section>
 
-      <!-- ============ ARTICLE EDITOR ============ -->
+      <!-- ARTICLE EDITOR -->
       <section class="section" data-sec="article-editor" hidden>
         <form id="article-form" onsubmit="ADMIN.saveArticle(event)">
           <input type="hidden" id="a-editing">
-
           <div class="card">
             <h2 id="article-editor-title">➕ إضافة مقال جديد</h2>
             <p class="card-desc">املأ الحقول ثم اضغط حفظ. لا تنسَ النشر بعد الانتهاء.</p>
@@ -507,26 +502,26 @@ tbody tr:hover{background:rgba(99,102,241,.04)}
             </div>
 
             <h3 style="margin-top:24px">محتوى المقال</h3>
-<div class="edit-mode-toggle">
-  <button type="button" id="mode-wysiwyg" class="active" onclick="ADMIN.setEditMode('wysiwyg')">✏️ محرر مرئي</button>
-  <button type="button" id="mode-html" onclick="ADMIN.setEditMode('html')">📄 HTML</button>
-</div>
-<div class="editor-toolbar">
-  <button type="button" onclick="ADMIN.execCmd('formatBlock','<h2>')">H2</button>
-  <button type="button" onclick="ADMIN.execCmd('formatBlock','<h3>')">H3</button>
-  <button type="button" onclick="ADMIN.execCmd('formatBlock','<p>')">¶ فقرة</button>
-  <button type="button" onclick="ADMIN.execCmd('bold')"><b>B</b></button>
-  <button type="button" onclick="ADMIN.execCmd('italic')"><i>I</i></button>
-  <button type="button" onclick="ADMIN.execCmd('underline')"><u>U</u></button>
-  <button type="button" onclick="ADMIN.execCmd('insertUnorderedList')">• قائمة</button>
-  <button type="button" onclick="ADMIN.execCmd('insertOrderedList')">1. قائمة</button>
-  <button type="button" onclick="ADMIN.execCmd('formatBlock','<blockquote>')">❝ اقتباس</button>
-  <button type="button" onclick="ADMIN.execCmd('createLink')">🔗 رابط</button>
-  <button type="button" onclick="ADMIN.execCmd('insertHorizontalRule')">— فاصل</button>
-  <button type="button" onclick="ADMIN.execCmd('removeFormat')">🧹 إزالة التنسيق</button>
-</div>
-<div id="a-wysiwyg" class="wysiwyg-editor" contenteditable="true" data-placeholder="اكتب هنا، أو الصق محتوى جاهزًا وسيتحوّل تلقائيًا إلى فقرات منسّقة..."></div>
-<textarea id="a-content" class="article-body code" hidden></textarea>
+            <div class="edit-mode-toggle">
+              <button type="button" id="mode-wysiwyg" class="active" onclick="ADMIN.setEditMode('wysiwyg')">✏️ محرر مرئي</button>
+              <button type="button" id="mode-html" onclick="ADMIN.setEditMode('html')">📄 HTML</button>
+            </div>
+            <div class="editor-toolbar">
+              <button type="button" onclick="ADMIN.execCmd('formatBlock','<h2>')">H2</button>
+              <button type="button" onclick="ADMIN.execCmd('formatBlock','<h3>')">H3</button>
+              <button type="button" onclick="ADMIN.execCmd('formatBlock','<p>')">¶ فقرة</button>
+              <button type="button" onclick="ADMIN.execCmd('bold')"><b>B</b></button>
+              <button type="button" onclick="ADMIN.execCmd('italic')"><i>I</i></button>
+              <button type="button" onclick="ADMIN.execCmd('underline')"><u>U</u></button>
+              <button type="button" onclick="ADMIN.execCmd('insertUnorderedList')">• قائمة</button>
+              <button type="button" onclick="ADMIN.execCmd('insertOrderedList')">1. قائمة</button>
+              <button type="button" onclick="ADMIN.execCmd('formatBlock','<blockquote>')">❝ اقتباس</button>
+              <button type="button" onclick="ADMIN.execCmd('createLink')">🔗 رابط</button>
+              <button type="button" onclick="ADMIN.execCmd('insertHorizontalRule')">— فاصل</button>
+              <button type="button" onclick="ADMIN.execCmd('removeFormat')">🧹 إزالة التنسيق</button>
+            </div>
+            <div id="a-wysiwyg" class="wysiwyg-editor" contenteditable="true" data-placeholder="اكتب هنا، أو الصق محتوى جاهزًا وسيتحوّل تلقائيًا إلى فقرات منسّقة..."></div>
+            <textarea id="a-content" class="article-body code" hidden></textarea>
 
             <h3 style="margin-top:24px">الحالة</h3>
             <div class="check-row">
@@ -542,202 +537,7 @@ tbody tr:hover{background:rgba(99,102,241,.04)}
         </form>
       </section>
 
-      <!-- ============ APPEARANCE ============ -->
-      <section class="section" data-sec="appearance" hidden>
-        <div class="card">
-          <h2>🎨 المظهر والألوان</h2>
-          <p class="card-desc">خصص ألوان المتجر وهويته.</p>
-
-          <h3>الهوية</h3>
-          <div class="form-grid">
-            <div class="field"><label>اسم المتجر</label><input id="s-storeName" placeholder="HERO"></div>
-            <div class="field"><label>وصف صغير <span class="hint">يظهر تحت الاسم</span></label><input id="s-storeTag" placeholder="STORE"></div>
-            <div class="field"><label>حرف الشعار (بديل)</label><input id="s-logoEmoji" placeholder="H" maxlength="4"></div>
-            <div class="field"><label>رابط صورة الشعار <span class="hint">اختياري</span></label><input id="s-logoImage" placeholder="https://..."></div>
-          </div>
-
-          <h3 style="margin-top:24px">الألوان</h3>
-          <div class="form-grid">
-            <div class="field"><label>اللون الأساسي</label>
-              <div class="color-row"><input id="s-primaryColor" type="color" value="#6366F1"><input id="s-primaryColorText" type="text" placeholder="#6366F1"></div>
-            </div>
-            <div class="field"><label>اللون الثانوي</label>
-              <div class="color-row"><input id="s-secondaryColor" type="color" value="#A855F7"><input id="s-secondaryColorText" type="text" placeholder="#A855F7"></div>
-            </div>
-            <div class="field"><label>لون الإبراز</label>
-              <div class="color-row"><input id="s-accentColor" type="color" value="#EC4899"><input id="s-accentColorText" type="text" placeholder="#EC4899"></div>
-            </div>
-          </div>
-          <button class="btn btn-primary" style="margin-top:20px" onclick="ADMIN.saveAppearance()">💾 حفظ المظهر</button>
-        </div>
-      </section>
-
-      <!-- ============ HERO ============ -->
-      <section class="section" data-sec="hero" hidden>
-        <div class="card">
-          <h2>🖼️ الصفحة الرئيسية</h2>
-          <p class="card-desc">تحكم في نصوص وأقسام الصفحة الرئيسية.</p>
-
-          <h3>قسم الهير</h3>
-          <div class="form-grid">
-            <div class="field full"><label>الشارة العلوية</label><input id="s-heroBadge" placeholder="✨ جديد — منتجات مختارة بعناية"></div>
-            <div class="field full"><label>العنوان الرئيسي</label><input id="s-heroTitle" placeholder="اكتشف منتجات وأدوات رقمية مميزة"></div>
-            <div class="field full"><label>الوصف</label><textarea id="s-heroSub" style="min-height:60px"></textarea></div>
-            <div class="field"><label>نص الزر الأول</label><input id="s-heroCta" placeholder="اكتشف المنتجات"></div>
-            <div class="field"><label>نص الزر الثاني</label><input id="s-heroCta2" placeholder="تصفّح التصنيفات"></div>
-            <div class="field full"><label>رابط صورة الخلفية <span class="hint">اختياري</span></label><input id="s-heroImage" placeholder="https://..."></div>
-          </div>
-
-          <h3 style="margin-top:24px">عناوين الأقسام</h3>
-          <div class="form-grid">
-            <div class="field"><label>عنوان المنتجات المميزة</label><input id="s-featuredTitle" placeholder="منتجات مميزة"></div>
-            <div class="field"><label>عنوان أحدث المنتجات</label><input id="s-latestTitle" placeholder="أحدث المنتجات"></div>
-            <div class="field"><label>عنوان التصنيفات</label><input id="s-catsTitle" placeholder="تصفّح التصنيفات"></div>
-            <div class="field"><label>عنوان قسم المقالات</label><input id="s-articlesTitle" placeholder="📝 المقالات"></div>
-            <div class="field full"><label>وصف قسم المقالات</label><input id="s-articlesSub" placeholder="نصائح، شروحات، وأفكار مفيدة"></div>
-          </div>
-
-          <h3 style="margin-top:24px">إظهار الأقسام</h3>
-          <div class="check-row">
-            <label class="check"><input type="checkbox" id="s-showFeatured"> <span>إظهار قسم المنتجات المميزة</span></label>
-            <label class="check"><input type="checkbox" id="s-showLatest"> <span>إظهار قسم أحدث المنتجات</span></label>
-            <label class="check"><input type="checkbox" id="s-showCats"> <span>إظهار قسم التصنيفات</span></label>
-            <label class="check"><input type="checkbox" id="s-showArticles"> <span>إظهار قسم المقالات في الرئيسية</span></label>
-          </div>
-
-          <button class="btn btn-primary" style="margin-top:20px" onclick="ADMIN.saveHero()">💾 حفظ الصفحة الرئيسية</button>
-        </div>
-      </section>
-
-      <!-- ============ SOCIAL ============ -->
-      <section class="section" data-sec="social" hidden>
-        <div class="card">
-          <h2>🔗 الروابط والتواصل</h2>
-          <p class="card-desc">تظهر هذه الروابط في تذييل المتجر.</p>
-
-          <h3>روابط التواصل</h3>
-          <div class="social-grid">
-            <div class="field"><label>𝕏 Twitter / X</label><input id="soc-twitter" placeholder="https://twitter.com/..."></div>
-            <div class="field"><label>📷 Instagram</label><input id="soc-instagram" placeholder="https://instagram.com/..."></div>
-            <div class="field"><label>▶️ YouTube</label><input id="soc-youtube" placeholder="https://youtube.com/@..."></div>
-            <div class="field"><label>🎵 TikTok</label><input id="soc-tiktok" placeholder="https://tiktok.com/@..."></div>
-            <div class="field"><label>f Facebook</label><input id="soc-facebook" placeholder="https://facebook.com/..."></div>
-            <div class="field"><label>💬 WhatsApp</label><input id="soc-whatsapp" placeholder="https://wa.me/..."></div>
-            <div class="field"><label>✉️ البريد الإلكتروني</label><input id="soc-email" placeholder="hello@example.com"></div>
-            <div class="field"><label>🔗 موقع آخر</label><input id="soc-website" placeholder="https://..."></div>
-          </div>
-
-          <h3 style="margin-top:24px">التذييل</h3>
-          <div class="form-grid">
-            <div class="field full"><label>نبذة عن المتجر</label><textarea id="s-footerAbout" style="min-height:60px"></textarea></div>
-            <div class="field full"><label>نص حقوق النشر</label><input id="s-footerCopyright" placeholder="© 2026 HERO — جميع الحقوق محفوظة."></div>
-          </div>
-
-          <button class="btn btn-primary" style="margin-top:20px" onclick="ADMIN.saveSocial()">💾 حفظ الروابط</button>
-        </div>
-      </section>
-
-      <!-- ============ SEO ============ -->
-      <section class="section" data-sec="seo" hidden>
-        <div class="card">
-          <h2>🔍 SEO والوصف</h2>
-          <p class="card-desc">تحكم في كيفية ظهور متجرك في محركات البحث ومشاركة الروابط.</p>
-          <div class="form-grid">
-            <div class="field full"><label>عنوان الصفحة (Meta Title) <span class="hint">يظهر في تاب المتصفح وفي Google</span></label><input id="s-metaTitle" placeholder="HERO Store — منتجات وأدوات رقمية"></div>
-            <div class="field full"><label>الوصف (Meta Description) <span class="hint">حتى 160 حرفًا</span></label><textarea id="s-metaDescription" style="min-height:70px" maxlength="200"></textarea></div>
-            <div class="field full"><label>صورة المشاركة (OG Image)</label><input id="s-ogImage" placeholder="https://... 1200x630"></div>
-          </div>
-          <button class="btn btn-primary" style="margin-top:20px" onclick="ADMIN.saveSEO()">💾 حفظ SEO</button>
-        </div>
-      </section>
-
-      <!-- ============ ANALYTICS ============ -->
-      <section class="section" data-sec="analytics" hidden>
-        <div class="card">
-          <h2>📈 التتبع والتحليلات</h2>
-          <p class="card-desc">أضف معرّفات Google وسيبدأ التتبع تلقائيًا بعد النشر.</p>
-
-          <div class="notice">الأحداث المدعومة: <code>page_view</code>, <code>view_item_list</code>, <code>view_item</code>, <code>select_item</code>, <code>search</code>, <code>click_buy</code>, <code>view_seller</code>, <code>view_article</code></div>
-
-          <div class="form-grid">
-            <div class="field"><label>GA4 Measurement ID</label><input id="a-ga4" placeholder="G-XXXXXXXXXX"></div>
-            <div class="field"><label>Google Tag Manager ID</label><input id="a-gtm" placeholder="GTM-XXXXXXX"></div>
-            <div class="field"><label>Google Ads ID</label><input id="a-ads" placeholder="AW-XXXXXXXXX"></div>
-            <div class="field"><label>Ads Conversion Label</label><input id="a-label" placeholder="AbC-D_efGh"></div>
-          </div>
-
-          <button class="btn btn-primary" style="margin-top:20px" onclick="ADMIN.saveAnalytics()">💾 حفظ التتبع</button>
-        </div>
-      </section>
-
-      <!-- ============ GITHUB ============ -->
-      <section class="section" data-sec="github" hidden>
-        <div class="card">
-          <h2>☁️ اتصال GitHub</h2>
-          <p class="card-desc">لنشر التغييرات ليراها كل الزوار، نحتاج اتصالًا بمستودعك على GitHub.</p>
-
-          <div class="notice">
-            <b>خطوات الحصول على Token:</b><br>
-            1) افتح <a href="https://github.com/settings/tokens" target="_blank">Personal access tokens (classic)</a><br>
-            2) اضغط <b>Generate new token (classic)</b><br>
-            3) ضع علامة ✅ على <code>repo</code> فقط<br>
-            4) Generate → انسخه (يبدأ بـ <code>ghp_</code>)
-          </div>
-
-          <div class="notice warn">⚠️ الـ Token يُحفظ في متصفحك فقط. لا تستخدم هذه اللوحة على أجهزة عامة.</div>
-
-          <div class="form-grid">
-            <div class="field"><label>GitHub Username *</label><input id="g-owner" placeholder="username"></div>
-            <div class="field"><label>Repository *</label><input id="g-repo" placeholder="my-store"></div>
-            <div class="field"><label>Branch</label><input id="g-branch" placeholder="main" value="main"></div>
-            <div class="field"><label>مسار ملف المنتجات</label><input id="g-path" placeholder="data.js" value="data.js"></div>
-            <div class="field"><label>مسار ملف المقالات</label><input id="g-articles-path" placeholder="articles.js" value="articles.js"></div>
-            <div class="field"><label>مسار ملف الألعاب</label><input id="g-games-path" placeholder="games.js" value="games.js"></div>
-            <div class="field full"><label>Personal Access Token *</label>
-              <form onsubmit="return false;" style="margin:0">
-                <input id="g-token" type="password" placeholder="ghp_..." autocomplete="new-password">
-              </form>
-            </div>
-          </div>
-
-          <div style="display:flex;gap:8px;margin-top:20px;flex-wrap:wrap">
-              <button class="btn btn-primary" onclick="ADMIN.saveGitHub()">💾 حفظ الإعدادات</button>
-              <button class="btn btn-outline" onclick="ADMIN.testGitHub()">🧪 اختبار الاتصال</button>
-              <button class="btn btn-outline" onclick="ADMIN.reloadFromGitHub()">🔄 إعادة تحميل من GitHub</button>
-              <button class="btn btn-danger" onclick="ADMIN.clearGitHub()">🗑️ حذف الإعدادات</button>
-          </div>
-        </div>
-
-        <div class="card">
-          <h2>📡 حالة الاتصال</h2>
-          <div id="gh-status"></div>
-        </div>
-      </section>
-
-      <!-- ============ RAW ============ -->
-      <section class="section" data-sec="raw" hidden>
-        <div class="card">
-          <h2>📄 البيانات الخام</h2>
-          <p class="card-desc">عرض / تعديل / استيراد البيانات مباشرة. للخبراء فقط.</p>
-
-          <div class="preview-toggle" style="margin-bottom:14px">
-            <button type="button" id="raw-tab-products" class="active" onclick="ADMIN.switchRawTab('products')">📦 المنتجات (data.js)</button>
-            <button type="button" id="raw-tab-articles" onclick="ADMIN.switchRawTab('articles')">📝 المقالات (articles.js)</button>
-          </div>
-
-          <div style="display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap">
-            <button class="btn btn-outline btn-sm" onclick="ADMIN.loadRaw()">🔄 تحديث</button>
-            <button class="btn btn-outline btn-sm" onclick="ADMIN.applyRaw()">✅ تطبيق التعديلات</button>
-            <button class="btn btn-outline btn-sm" onclick="ADMIN.downloadBackup()">⬇️ تنزيل الملف الحالي</button>
-          </div>
-
-          <div class="field">
-            <textarea id="raw-json" class="code" style="min-height:400px"></textarea>
-          </div>
-        </div>
-      </section>
-
-            <!-- ============ GAMES LIST ============ -->
+      <!-- GAMES LIST -->
       <section class="section" data-sec="games" hidden>
         <div class="card">
           <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center;justify-content:space-between;margin-bottom:14px">
@@ -768,7 +568,7 @@ tbody tr:hover{background:rgba(99,102,241,.04)}
         </div>
       </section>
 
-      <!-- ============ GAME EDITOR ============ -->
+      <!-- GAME EDITOR -->
       <section class="section" data-sec="game-editor" hidden>
         <form id="game-form" onsubmit="ADMIN.saveGame(event)">
           <input type="hidden" id="g-editing">
@@ -827,7 +627,7 @@ tbody tr:hover{background:rgba(99,102,241,.04)}
         </form>
       </section>
 
-      <!-- ============ GAME SETTINGS ============ -->
+      <!-- GAME SETTINGS -->
       <section class="section" data-sec="game-settings" hidden>
         <div class="card">
           <h2>⚙️ إعدادات HeroGames</h2>
@@ -853,7 +653,7 @@ tbody tr:hover{background:rgba(99,102,241,.04)}
           </div>
 
           <h3 style="margin-top:24px">تصنيفات الألعاب</h3>
-          <p class="muted" style="font-size:13px;margin:0 0 14px">التصنيفات الافتراضية: رياضة، أكشن، ألغاز، أطفال، أركيد، استراتيجية، سباق. يمكنك إضافتها أو حذفها من نفس القسم.</p>
+          <p class="muted" style="font-size:13px;margin:0 0 14px">التصنيفات الافتراضية: رياضة، أكشن، ألغاز، أطفال، أركيد، استراتيجية، سباق.</p>
           <div id="game-cats-list"></div>
           <div class="form-grid" style="margin-top:14px">
             <div class="field"><label>معرّف التصنيف</label><input id="gc-id" placeholder="sport"></div>
@@ -866,16 +666,213 @@ tbody tr:hover{background:rgba(99,102,241,.04)}
         </div>
       </section>
 
-      <!-- ============ DANGER ============ -->
+      <!-- APPEARANCE -->
+      <section class="section" data-sec="appearance" hidden>
+        <div class="card">
+          <h2>🎨 المظهر والألوان</h2>
+          <p class="card-desc">خصص ألوان المتجر وهويته.</p>
+
+          <h3>الهوية</h3>
+          <div class="form-grid">
+            <div class="field"><label>اسم المتجر</label><input id="s-storeName" placeholder="HERO"></div>
+            <div class="field"><label>وصف صغير <span class="hint">يظهر تحت الاسم</span></label><input id="s-storeTag" placeholder="STORE"></div>
+            <div class="field"><label>حرف الشعار (بديل)</label><input id="s-logoEmoji" placeholder="H" maxlength="4"></div>
+            <div class="field"><label>رابط صورة الشعار <span class="hint">اختياري</span></label><input id="s-logoImage" placeholder="https://..."></div>
+          </div>
+
+          <h3 style="margin-top:24px">الألوان</h3>
+          <div class="form-grid">
+            <div class="field"><label>اللون الأساسي</label>
+              <div class="color-row"><input id="s-primaryColor" type="color" value="#6366F1"><input id="s-primaryColorText" type="text" placeholder="#6366F1"></div>
+            </div>
+            <div class="field"><label>اللون الثانوي</label>
+              <div class="color-row"><input id="s-secondaryColor" type="color" value="#A855F7"><input id="s-secondaryColorText" type="text" placeholder="#A855F7"></div>
+            </div>
+            <div class="field"><label>لون الإبراز</label>
+              <div class="color-row"><input id="s-accentColor" type="color" value="#EC4899"><input id="s-accentColorText" type="text" placeholder="#EC4899"></div>
+            </div>
+          </div>
+          <button class="btn btn-primary" style="margin-top:20px" onclick="ADMIN.saveAppearance()">💾 حفظ المظهر</button>
+        </div>
+      </section>
+
+      <!-- HERO -->
+      <section class="section" data-sec="hero" hidden>
+        <div class="card">
+          <h2>🖼️ الصفحة الرئيسية</h2>
+          <p class="card-desc">تحكم في نصوص وأقسام الصفحة الرئيسية.</p>
+
+          <h3>قسم الهير</h3>
+          <div class="form-grid">
+            <div class="field full"><label>الشارة العلوية</label><input id="s-heroBadge" placeholder="✨ جديد — منتجات مختارة بعناية"></div>
+            <div class="field full"><label>العنوان الرئيسي</label><input id="s-heroTitle" placeholder="اكتشف منتجات وأدوات رقمية مميزة"></div>
+            <div class="field full"><label>الوصف</label><textarea id="s-heroSub" style="min-height:60px"></textarea></div>
+            <div class="field"><label>نص الزر الأول</label><input id="s-heroCta" placeholder="اكتشف المنتجات"></div>
+            <div class="field"><label>نص الزر الثاني</label><input id="s-heroCta2" placeholder="تصفّح التصنيفات"></div>
+            <div class="field full"><label>رابط صورة الخلفية <span class="hint">اختياري</span></label><input id="s-heroImage" placeholder="https://..."></div>
+          </div>
+
+          <h3 style="margin-top:24px">عناوين الأقسام</h3>
+          <div class="form-grid">
+            <div class="field"><label>عنوان المنتجات المميزة</label><input id="s-featuredTitle" placeholder="منتجات مميزة"></div>
+            <div class="field"><label>عنوان أحدث المنتجات</label><input id="s-latestTitle" placeholder="أحدث المنتجات"></div>
+            <div class="field"><label>عنوان التصنيفات</label><input id="s-catsTitle" placeholder="تصفّح التصنيفات"></div>
+            <div class="field"><label>عنوان قسم المقالات</label><input id="s-articlesTitle" placeholder="📝 المقالات"></div>
+            <div class="field full"><label>وصف قسم المقالات</label><input id="s-articlesSub" placeholder="نصائح، شروحات، وأفكار مفيدة"></div>
+          </div>
+
+          <h3 style="margin-top:24px">إظهار الأقسام</h3>
+          <div class="check-row">
+            <label class="check"><input type="checkbox" id="s-showFeatured"> <span>إظهار قسم المنتجات المميزة</span></label>
+            <label class="check"><input type="checkbox" id="s-showLatest"> <span>إظهار قسم أحدث المنتجات</span></label>
+            <label class="check"><input type="checkbox" id="s-showCats"> <span>إظهار قسم التصنيفات</span></label>
+            <label class="check"><input type="checkbox" id="s-showArticles"> <span>إظهار قسم المقالات في الرئيسية</span></label>
+          </div>
+
+          <button class="btn btn-primary" style="margin-top:20px" onclick="ADMIN.saveHero()">💾 حفظ الصفحة الرئيسية</button>
+        </div>
+      </section>
+
+      <!-- SOCIAL -->
+      <section class="section" data-sec="social" hidden>
+        <div class="card">
+          <h2>🔗 الروابط والتواصل</h2>
+          <p class="card-desc">تظهر هذه الروابط في تذييل المتجر.</p>
+
+          <h3>روابط التواصل</h3>
+          <div class="social-grid">
+            <div class="field"><label>𝕏 Twitter / X</label><input id="soc-twitter" placeholder="https://twitter.com/..."></div>
+            <div class="field"><label>📷 Instagram</label><input id="soc-instagram" placeholder="https://instagram.com/..."></div>
+            <div class="field"><label>▶️ YouTube</label><input id="soc-youtube" placeholder="https://youtube.com/@..."></div>
+            <div class="field"><label>🎵 TikTok</label><input id="soc-tiktok" placeholder="https://tiktok.com/@..."></div>
+            <div class="field"><label>f Facebook</label><input id="soc-facebook" placeholder="https://facebook.com/..."></div>
+            <div class="field"><label>💬 WhatsApp</label><input id="soc-whatsapp" placeholder="https://wa.me/..."></div>
+            <div class="field"><label>✉️ البريد الإلكتروني</label><input id="soc-email" placeholder="hello@example.com"></div>
+            <div class="field"><label>🔗 موقع آخر</label><input id="soc-website" placeholder="https://..."></div>
+          </div>
+
+          <h3 style="margin-top:24px">التذييل</h3>
+          <div class="form-grid">
+            <div class="field full"><label>نبذة عن المتجر</label><textarea id="s-footerAbout" style="min-height:60px"></textarea></div>
+            <div class="field full"><label>نص حقوق النشر</label><input id="s-footerCopyright" placeholder="© 2026 HERO — جميع الحقوق محفوظة."></div>
+          </div>
+
+          <button class="btn btn-primary" style="margin-top:20px" onclick="ADMIN.saveSocial()">💾 حفظ الروابط</button>
+        </div>
+      </section>
+
+      <!-- SEO -->
+      <section class="section" data-sec="seo" hidden>
+        <div class="card">
+          <h2>🔍 SEO والوصف</h2>
+          <p class="card-desc">تحكم في كيفية ظهور متجرك في محركات البحث ومشاركة الروابط.</p>
+          <div class="form-grid">
+            <div class="field full"><label>عنوان الصفحة (Meta Title) <span class="hint">يظهر في تاب المتصفح وفي Google</span></label><input id="s-metaTitle" placeholder="HERO Store — منتجات وأدوات رقمية"></div>
+            <div class="field full"><label>الوصف (Meta Description) <span class="hint">حتى 160 حرفًا</span></label><textarea id="s-metaDescription" style="min-height:70px" maxlength="200"></textarea></div>
+            <div class="field full"><label>صورة المشاركة (OG Image)</label><input id="s-ogImage" placeholder="https://... 1200x630"></div>
+          </div>
+          <button class="btn btn-primary" style="margin-top:20px" onclick="ADMIN.saveSEO()">💾 حفظ SEO</button>
+        </div>
+      </section>
+
+      <!-- ANALYTICS -->
+      <section class="section" data-sec="analytics" hidden>
+        <div class="card">
+          <h2>📈 التتبع والتحليلات</h2>
+          <p class="card-desc">أضف معرّفات Google وسيبدأ التتبع تلقائيًا بعد النشر.</p>
+
+          <div class="notice">الأحداث المدعومة: <code>page_view</code>, <code>view_item_list</code>, <code>view_item</code>, <code>select_item</code>, <code>search</code>, <code>click_buy</code>, <code>view_seller</code>, <code>view_article</code></div>
+
+          <div class="form-grid">
+            <div class="field"><label>GA4 Measurement ID</label><input id="a-ga4" placeholder="G-XXXXXXXXXX"></div>
+            <div class="field"><label>Google Tag Manager ID</label><input id="a-gtm" placeholder="GTM-XXXXXXX"></div>
+            <div class="field"><label>Google Ads ID</label><input id="a-ads" placeholder="AW-XXXXXXXXX"></div>
+            <div class="field"><label>Ads Conversion Label</label><input id="a-label" placeholder="AbC-D_efGh"></div>
+          </div>
+
+          <button class="btn btn-primary" style="margin-top:20px" onclick="ADMIN.saveAnalytics()">💾 حفظ التتبع</button>
+        </div>
+      </section>
+
+      <!-- GITHUB -->
+      <section class="section" data-sec="github" hidden>
+        <div class="card">
+          <h2>☁️ اتصال GitHub</h2>
+          <p class="card-desc">لنشر التغييرات ليراها كل الزوار، نحتاج اتصالًا بمستودعك على GitHub.</p>
+
+          <div class="notice">
+            <b>خطوات الحصول على Token:</b><br>
+            1) افتح <a href="https://github.com/settings/tokens" target="_blank">Personal access tokens (classic)</a><br>
+            2) اضغط <b>Generate new token (classic)</b><br>
+            3) ضع علامة ✅ على <code>repo</code> فقط<br>
+            4) Generate → انسخه (يبدأ بـ <code>ghp_</code>)
+          </div>
+
+          <div class="notice warn">⚠️ الـ Token يُحفظ في متصفحك فقط. لا تستخدم هذه اللوحة على أجهزة عامة.</div>
+
+          <div class="form-grid">
+            <div class="field"><label>GitHub Username *</label><input id="g-owner" placeholder="username"></div>
+            <div class="field"><label>Repository *</label><input id="g-repo" placeholder="my-store"></div>
+            <div class="field"><label>Branch</label><input id="g-branch" placeholder="main" value="main"></div>
+            <div class="field"><label>مسار ملف المنتجات</label><input id="g-path" placeholder="data.js" value="data.js"></div>
+            <div class="field"><label>مسار ملف المقالات</label><input id="g-articles-path" placeholder="articles.js" value="articles.js"></div>
+            <div class="field"><label>مسار ملف الألعاب</label><input id="g-games-path" placeholder="games.js" value="games.js"></div>
+            <div class="field full"><label>Personal Access Token *</label>
+              <form onsubmit="return false;" style="margin:0">
+                <input id="g-token" type="password" placeholder="ghp_..." autocomplete="new-password">
+              </form>
+            </div>
+          </div>
+
+          <div style="display:flex;gap:8px;margin-top:20px;flex-wrap:wrap">
+            <button class="btn btn-primary" onclick="ADMIN.saveGitHub()">💾 حفظ الإعدادات</button>
+            <button class="btn btn-outline" onclick="ADMIN.testGitHub()">🧪 اختبار الاتصال</button>
+            <button class="btn btn-outline" onclick="ADMIN.reloadFromGitHub()">🔄 إعادة تحميل من GitHub</button>
+            <button class="btn btn-danger" onclick="ADMIN.clearGitHub()">🗑️ حذف الإعدادات</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2>📡 حالة الاتصال</h2>
+          <div id="gh-status"></div>
+        </div>
+      </section>
+
+      <!-- RAW -->
+      <section class="section" data-sec="raw" hidden>
+        <div class="card">
+          <h2>📄 البيانات الخام</h2>
+          <p class="card-desc">عرض / تعديل / استيراد البيانات مباشرة. للخبراء فقط.</p>
+
+          <div class="preview-toggle" style="margin-bottom:14px">
+            <button type="button" id="raw-tab-products" class="active" onclick="ADMIN.switchRawTab('products')">📦 المنتجات (data.js)</button>
+            <button type="button" id="raw-tab-articles" onclick="ADMIN.switchRawTab('articles')">📝 المقالات (articles.js)</button>
+            <button type="button" id="raw-tab-games" onclick="ADMIN.switchRawTab('games')">🎮 الألعاب (games.js)</button>
+          </div>
+
+          <div style="display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap">
+            <button class="btn btn-outline btn-sm" onclick="ADMIN.loadRaw()">🔄 تحديث</button>
+            <button class="btn btn-outline btn-sm" onclick="ADMIN.applyRaw()">✅ تطبيق التعديلات</button>
+            <button class="btn btn-outline btn-sm" onclick="ADMIN.downloadBackup()">⬇️ تنزيل الملف الحالي</button>
+          </div>
+
+          <div class="field">
+            <textarea id="raw-json" class="code" style="min-height:400px"></textarea>
+          </div>
+        </div>
+      </section>
+
+      <!-- DANGER -->
       <section class="section" data-sec="danger" hidden>
         <div class="card">
           <h2 style="color:#FCA5A5">⚠️ منطقة الخطر</h2>
           <p class="card-desc">إجراءات لا يمكن التراجع عنها.</p>
           <div style="display:flex;gap:8px;flex-wrap:wrap">
-            <button class="btn btn-danger" onclick="ADMIN.resetAll()">🗑️ إعادة تعيين كاملة (المنتجات + المقالات)</button>
+            <button class="btn btn-danger" onclick="ADMIN.resetAll()">🗑️ إعادة تعيين كاملة</button>
             <button class="btn btn-danger" onclick="ADMIN.deleteAllProducts()">🗑️ حذف كل المنتجات</button>
             <button class="btn btn-danger" onclick="ADMIN.deleteAllCategories()">🗑️ حذف كل التصنيفات</button>
             <button class="btn btn-danger" onclick="ADMIN.deleteAllArticles()">🗑️ حذف كل المقالات</button>
+            <button class="btn btn-danger" onclick="ADMIN.deleteAllGames()">🗑️ حذف كل الألعاب</button>
           </div>
         </div>
       </section>
@@ -884,7 +881,6 @@ tbody tr:hover{background:rgba(99,102,241,.04)}
   </main>
 </div>
 
-<!-- Modal -->
 <div class="modal-overlay" id="modal">
   <div class="modal">
     <h3 id="modal-title"></h3>
@@ -900,16 +896,22 @@ tbody tr:hover{background:rgba(99,102,241,.04)}
 
 <script src="data.js"></script>
 <script src="articles.js"></script>
+<script src="games.js"></script>
 <script>
 /* ============================================================
-   HERO Store — ADMIN PANEL v3 (Products + Articles)
+   HERO Store — ADMIN PANEL v4
    ============================================================ */
 (function(){
 'use strict';
 
+/* ---------- Constants ---------- */
 var GH_KEY = 'hero_admin_gh_v1';
+
+/* ---------- Global dirty flags ---------- */
 var DIRTY_DATA = false;
 var DIRTY_ARTICLES = false;
+var DIRTY_GAMES = false;
+var PUBLISHING = false;
 
 /* ---------- Helpers ---------- */
 function $(s,c){ return (c||document).querySelector(s); }
@@ -929,8 +931,13 @@ function slugify(s){
     .slice(0,60) || ('item-'+Date.now().toString(36));
 }
 function utf8ToBase64(str){ return btoa(unescape(encodeURIComponent(str))); }
+function escapeHTML(s){
+  return String(s).replace(/[&<>"']/g, function(m){
+    return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[m];
+  });
+}
 
-/* ---------- State ---------- */
+/* ---------- State: Store ---------- */
 var D = window.HERO_DATA || {};
 var STATE = {
   version: 1,
@@ -955,6 +962,7 @@ var STATE = {
   analytics: Object.assign({ GA4_ID:'', GTM_ID:'', ADS_ID:'', ADS_CONVERSION_LABEL:'' }, D.analytics || {})
 };
 
+/* ---------- State: Articles ---------- */
 var AR = window.HERO_ARTICLES || {};
 var ARTICLES_STATE = {
   version: 1,
@@ -962,7 +970,32 @@ var ARTICLES_STATE = {
   articles: JSON.parse(JSON.stringify(AR.articles || []))
 };
 
-/* ---------- GitHub config ---------- */
+/* ---------- State: Games ---------- */
+var G = window.HERO_GAMES || {};
+var GAMES_STATE = {
+  version: 1,
+  updatedAt: G.updatedAt || new Date().toISOString(),
+  categories: JSON.parse(JSON.stringify(G.categories || [
+    {id:'sport',name:'رياضة',icon:'⚽'},
+    {id:'action',name:'أكشن',icon:'💥'},
+    {id:'puzzle',name:'ألغاز',icon:'🧩'},
+    {id:'kids',name:'أطفال',icon:'🧸'},
+    {id:'arcade',name:'أركيد',icon:'👾'},
+    {id:'strategy',name:'استراتيجية',icon:'♟️'},
+    {id:'racing',name:'سباق',icon:'🏎️'}
+  ])),
+  settings: Object.assign({
+    appName:'HeroGames', tagline:'أفضل الألعاب في مكان واحد',
+    logoImage:'', logoEmoji:'🎮',
+    primaryColor:'#F59E0B', bgColor:'#0F0F1A',
+    featuredId:'', showDailyBonus:true
+  }, G.settings || {}),
+  games: JSON.parse(JSON.stringify(G.games || []))
+};
+
+/* ============================================================
+   GITHUB
+   ============================================================ */
 function getGH(){ try { return JSON.parse(localStorage.getItem(GH_KEY)); } catch(e){ return null; } }
 function setGH(c){ localStorage.setItem(GH_KEY, JSON.stringify(c)); }
 function delGH(){ localStorage.removeItem(GH_KEY); }
@@ -987,10 +1020,7 @@ async function ghGet(cfg, path){
 async function ghPut(cfg, path, content, msg, attempt){
   attempt = attempt || 1;
   var MAX_ATTEMPTS = 5;
-
-  // جلب SHA جديد مع كل محاولة (تجنب الكاش)
   var m = await ghGet(cfg, path);
-
   var body = {
     message: msg || ('Update '+path),
     content: utf8ToBase64(content),
@@ -1008,26 +1038,25 @@ async function ghPut(cfg, path, content, msg, attempt){
     body: JSON.stringify(body)
   });
 
-  // 409 = الملف تغيّر بين GET و PUT
   if (r.status === 409){
     if (attempt >= MAX_ATTEMPTS){
       var t409 = await r.text();
       throw new Error('تعارض متكرر ('+MAX_ATTEMPTS+' محاولات). أغلق كل تبويبات اللوحة الأخرى ثم أعد المحاولة.\n'+t409.slice(0,150));
     }
-    // انتظر أطول قليلاً مع كل محاولة (exponential backoff)
     var delay = 1500 * attempt;
-    console.warn('[publish] 409 على "'+path+'" — إعادة المحاولة '+(attempt+1)+'/'+MAX_ATTEMPTS+' بعد '+delay+'ms');
+    console.warn('[publish] 409 على "'+path+'" — إعادة المحاولة '+(attempt+1)+'/'+MAX_ATTEMPTS);
     await new Promise(function(res){ setTimeout(res, delay); });
     return ghPut(cfg, path, content, msg, attempt + 1);
   }
 
   if (r.status === 401) throw new Error('التوكن غير صالح (401)');
-  if (r.status === 403) throw new Error('صلاحية الكتابة مرفوضة (403). تأكد من نطاق repo.');
+  if (r.status === 403) throw new Error('صلاحية الكتابة مرفوضة (403).');
   if (r.status === 404) throw new Error('المسار "'+path+'" غير موجود (404).');
   if (!r.ok){ var t = await r.text(); throw new Error('GitHub PUT '+r.status+': '+t.slice(0,200)); }
   return await r.json();
 }
 
+/* ---------- Generate JS files ---------- */
 function generateDataJs(){
   STATE.updatedAt = new Date().toISOString();
   return '/* HERO Store data — auto-generated */\nwindow.HERO_DATA = ' + JSON.stringify(STATE, null, 2) + ';\n';
@@ -1036,18 +1065,27 @@ function generateArticlesJs(){
   ARTICLES_STATE.updatedAt = new Date().toISOString();
   return '/* HERO Store articles — auto-generated */\nwindow.HERO_ARTICLES = ' + JSON.stringify(ARTICLES_STATE, null, 2) + ';\n';
 }
+function generateGamesJs(){
+  GAMES_STATE.updatedAt = new Date().toISOString();
+  return '/* HERO Games data — auto-generated */\nwindow.HERO_GAMES = ' + JSON.stringify(GAMES_STATE, null, 2) + ';\n';
+}
 
-/* ---------- Publish ---------- */
+/* ---------- Publish Status ---------- */
 function markDirtyData(){ DIRTY_DATA = true; updatePublishStatus(); updateStats(); }
 function markDirtyArticles(){ DIRTY_ARTICLES = true; updatePublishStatus(); updateStats(); }
+function markDirtyGames(){ DIRTY_GAMES = true; updatePublishStatus(); updateStats(); }
 
 function updatePublishStatus(){
   var cfg = getGH();
   var dot = $('#publish-dot'), label = $('#publish-label'), btn = $('#publish-btn');
   var dash = $('#dash-gh-status');
   var st = $('#st-publish'), stSub = $('#st-publish-sub');
-  var anyDirty = DIRTY_DATA || DIRTY_ARTICLES || DIRTY_GAMES;
-  if (DIRTY_GAMES) dirtyList.push('games.js');
+
+  var dirtyList = [];
+  if (DIRTY_DATA)     dirtyList.push('data.js');
+  if (DIRTY_ARTICLES) dirtyList.push('articles.js');
+  if (DIRTY_GAMES)    dirtyList.push('games.js');
+  var anyDirty = dirtyList.length > 0;
 
   if (!cfg || !cfg.token){
     dot.className = 'publish-dot err';
@@ -1061,20 +1099,15 @@ function updatePublishStatus(){
   dot.className = 'publish-dot ok';
   label.textContent = cfg.owner+'/'+cfg.repo;
   btn.disabled = !anyDirty;
-  var dirtyList = [];
-  if (DIRTY_DATA) dirtyList.push('data.js');
-  if (DIRTY_ARTICLES) dirtyList.push('articles.js');
   if (dash) dash.innerHTML = '<div class="notice ok">✅ متصل: <b>'+escapeHtml(cfg.owner)+'/'+escapeHtml(cfg.repo)+'</b><br>'+
-    '📦 المنتجات: <code>'+escapeHtml(cfg.path)+'</code> · 📝 المقالات: <code>'+escapeHtml(cfg.articlesPath)+'</code></div>';
+    '📦 <code>'+escapeHtml(cfg.path||'data.js')+'</code> · 📝 <code>'+escapeHtml(cfg.articlesPath||'articles.js')+'</code> · 🎮 <code>'+escapeHtml(cfg.gamesPath||'games.js')+'</code></div>';
   if (st) st.textContent = anyDirty ? '⚠️' : '✅';
   if (stSub) stSub.textContent = anyDirty ? ('غير منشور: '+dirtyList.join(' + ')) : 'محدَّث';
 }
-var DIRTY_GAMES = false;
-var PUBLISHING = false;  /* قفل لمنع النشر المزدوج */
 
+/* ---------- Publish ---------- */
 async function publish(){
   if (PUBLISHING){ toast('النشر قيد التنفيذ... انتظر قليلاً','err'); return; }
-
   var cfg = getGH();
   if (!cfg || !cfg.token){ toast('اضبط إعدادات GitHub أولًا','err'); return; }
   if (!DIRTY_DATA && !DIRTY_ARTICLES && !DIRTY_GAMES){ toast('لا توجد تغييرات للنشر','err'); return; }
@@ -1088,27 +1121,24 @@ async function publish(){
   try {
     if (DIRTY_DATA){
       btn.innerHTML = '<span class="loader"></span> نشر data.js...';
-      await ghPut(cfg, cfg.path, generateDataJs(), 'Publish data.js — '+new Date().toISOString());
+      await ghPut(cfg, cfg.path || 'data.js', generateDataJs(), 'Publish data.js — '+new Date().toISOString());
       DIRTY_DATA = false;
       results.push('data.js ✅');
     }
     if (DIRTY_ARTICLES){
       btn.innerHTML = '<span class="loader"></span> نشر articles.js...';
-      await ghPut(cfg, cfg.articlesPath, generateArticlesJs(), 'Publish articles.js — '+new Date().toISOString());
+      await ghPut(cfg, cfg.articlesPath || 'articles.js', generateArticlesJs(), 'Publish articles.js — '+new Date().toISOString());
       DIRTY_ARTICLES = false;
       results.push('articles.js ✅');
     }
-        if (DIRTY_GAMES){
+    if (DIRTY_GAMES){
       btn.innerHTML = '<span class="loader"></span> نشر games.js...';
       await ghPut(cfg, cfg.gamesPath || 'games.js', generateGamesJs(), 'Publish games.js — '+new Date().toISOString());
       DIRTY_GAMES = false;
       results.push('games.js ✅');
     }
-
-    // ✅ إعادة تعيين الزر عند النجاح
     btn.innerHTML = origHTML;
     btn.disabled = false;
-
     updatePublishStatus();
     updateStats();
     toast('✅ تم النشر: ' + results.join(' · '), 'ok');
@@ -1123,16 +1153,21 @@ async function publish(){
     PUBLISHING = false;
   }
 }
-/* ---------- Sections / Nav ---------- */
+
+/* ============================================================
+   NAVIGATION
+   ============================================================ */
 var SECTION_TITLES = {
   dashboard:'📊 لوحة القيادة',
   products:'📦 المنتجات', editor:'➕ محرر المنتج', categories:'🏷️ التصنيفات',
   articles:'📝 المقالات', 'article-editor':'➕ محرر المقال',
+  games:'🎮 الألعاب', 'game-editor':'➕ محرر اللعبة', 'game-settings':'⚙️ إعدادات HeroGames',
   appearance:'🎨 المظهر والألوان', hero:'🖼️ الصفحة الرئيسية',
   social:'🔗 الروابط والتواصل', seo:'🔍 SEO',
   analytics:'📈 التتبع والتحليلات', github:'☁️ اتصال GitHub',
   raw:'📄 البيانات الخام', danger:'⚠️ منطقة الخطر'
 };
+
 function goSection(name){
   $$('.sb-link').forEach(function(a){ a.classList.toggle('active', a.dataset.sec===name); });
   $$('.section').forEach(function(s){ s.hidden = s.dataset.sec !== name; });
@@ -1141,6 +1176,9 @@ function goSection(name){
   if (name==='products') renderProductsTable();
   if (name==='categories') renderCategories();
   if (name==='articles') renderArticlesTable();
+  if (name==='games') renderGamesTable();
+  if (name==='game-editor') fillGameCategorySelect();
+  if (name==='game-settings') fillGameSettings();
   if (name==='appearance') fillAppearance();
   if (name==='hero') fillHero();
   if (name==='social') fillSocial();
@@ -1150,22 +1188,23 @@ function goSection(name){
   if (name==='raw') loadRaw();
   if (window.innerWidth <= 900) $('#sidebar').classList.remove('open');
   window.scrollTo({top:0,behavior:'smooth'});
-  if (name==='games') renderGamesTable();
-  if (name==='game-editor') fillGameCategorySelect();
-  if (name==='game-settings') fillGameSettings();
 }
 
-/* ---------- Stats ---------- */
+/* ============================================================
+   STATS
+   ============================================================ */
 function updateStats(){
   $('#sb-prod-count').textContent = STATE.products.length;
   $('#sb-cat-count').textContent = STATE.categories.length;
   if ($('#sb-art-count')) $('#sb-art-count').textContent = ARTICLES_STATE.articles.length;
+  if ($('#sb-game-count')) $('#sb-game-count').textContent = GAMES_STATE.games.length;
   if ($('#st-products')) $('#st-products').textContent = STATE.products.length;
   if ($('#st-categories')) $('#st-categories').textContent = STATE.categories.length;
   if ($('#st-articles')) $('#st-articles').textContent = ARTICLES_STATE.articles.length;
   if ($('#st-articles-sub')) $('#st-articles-sub').textContent = ARTICLES_STATE.articles.filter(function(a){return a.featured;}).length + ' مميز';
   if ($('#prod-count-line')) $('#prod-count-line').textContent = STATE.products.length + ' منتج في ' + STATE.categories.length + ' تصنيف';
   if ($('#art-count-line')) $('#art-count-line').textContent = ARTICLES_STATE.articles.length + ' مقال';
+  if ($('#game-count-line')) $('#game-count-line').textContent = GAMES_STATE.games.length + ' لعبة في ' + GAMES_STATE.categories.length + ' تصنيف';
 
   var recent = STATE.products.slice(-5).reverse();
   if ($('#dash-recent')){
@@ -1189,24 +1228,22 @@ function updateStats(){
     }).join('') : '<div class="empty-row" style="padding:20px"><div class="big">📝</div>لا توجد مقالات بعد</div>';
   }
 }
-function refreshDashboard(){ updateStats(); updatePublishStatus(); }
 
-  // ⭐ دالة جديدة منفصلة
 function updateGameStats(){
   if ($('#sb-game-count')) $('#sb-game-count').textContent = GAMES_STATE.games.length;
 }
-
 function refreshDashboard(){ updateStats(); updateGameStats(); updatePublishStatus(); }
+
 /* ============================================================
    PRODUCTS
    ============================================================ */
 var selected = new Set();
+
 function renderProductsTable(){
   var search = ($('#prod-search').value||'').toLowerCase();
   var filterCat = $('#prod-filter').value;
-  var filterSel = $('#prod-filter');
-  filterSel.innerHTML = '<option value="">كل التصنيفات</option>' + STATE.categories.map(function(c){
-    return '<option value="'+escapeHtml(c.id)+'"'+ (filterCat===c.id?' selected':'')+'>'+c.icon+' '+escapeHtml(c.name)+'</option>';
+  $('#prod-filter').innerHTML = '<option value="">كل التصنيفات</option>' + STATE.categories.map(function(c){
+    return '<option value="'+escapeHtml(c.id)+'"'+(filterCat===c.id?' selected':'')+'>'+c.icon+' '+escapeHtml(c.name)+'</option>';
   }).join('');
 
   var list = STATE.products.filter(function(p){
@@ -1261,7 +1298,6 @@ function updateBulkBar(){
 }
 function clearSelection(){ selected.clear(); renderProductsTable(); }
 
-/* ---------- Categories ---------- */
 function renderCategories(){
   $('#cats-list').innerHTML = STATE.categories.length ? STATE.categories.map(function(c){
     var used = STATE.products.filter(function(p){return p.category===c.id;}).length;
@@ -1273,7 +1309,6 @@ function renderCategories(){
   }).join('') : '<div class="empty-row"><div class="big">🏷️</div>لا توجد تصنيفات</div>';
 }
 
-/* ---------- Product Editor ---------- */
 var editTags = [];
 function renderTags(){
   var box = $('#tags-box');
@@ -1297,9 +1332,9 @@ function tagKey(e){
 }
 function removeTag(i){ editTags.splice(i,1); renderTags(); }
 
-function fillCategorySelect(selected){
+function fillCategorySelect(sel){
   $('#f-category').innerHTML = STATE.categories.map(function(c){
-    return '<option value="'+escapeHtml(c.id)+'"'+(selected===c.id?' selected':'')+'>'+c.icon+' '+escapeHtml(c.name)+'</option>';
+    return '<option value="'+escapeHtml(c.id)+'"'+(sel===c.id?' selected':'')+'>'+c.icon+' '+escapeHtml(c.name)+'</option>';
   }).join('');
 }
 
@@ -1423,7 +1458,6 @@ function bulkDelete(){
   });
 }
 
-/* ---------- Categories ---------- */
 function addCategory(){
   var id=$('#c-id').value.trim(), name=$('#c-name').value.trim(), icon=$('#c-icon').value.trim()||'📦';
   if (!id || !name){ toast('املأ المعرّف والاسم','err'); return; }
@@ -1461,7 +1495,6 @@ function renderArticlesTable(){
       return (a.title+' '+a.id+' '+(a.excerpt||'')+' '+(a.tags||[]).join(' ')).toLowerCase().indexOf(search) !== -1;
     });
   }
-  // sort by date desc
   list.sort(function(a,b){ return (b.date||'').localeCompare(a.date||''); });
 
   var tb = $('#art-tbody');
@@ -1509,7 +1542,6 @@ function updateArticleBulkBar(){
 }
 function clearArticleSelection(){ selectedArticles.clear(); renderArticlesTable(); }
 
-/* ---------- Article tags ---------- */
 var articleTags = [];
 function renderArticleTags(){
   var box = $('#art-tags-box');
@@ -1533,7 +1565,6 @@ function articleTagKey(e){
 }
 function removeArticleTag(i){ articleTags.splice(i,1); renderArticleTags(); }
 
-/* ---------- Article editor ---------- */
 function newArticle(){
   $('#article-form').reset();
   $('#a-editing').value = '';
@@ -1566,8 +1597,8 @@ function editArticle(id){
   $('#a-c1').value = a.c1 || '#6366F1';
   $('#a-c2').value = a.c2 || '#A855F7';
   $('#a-content').value = a.content || '';
-$('#a-wysiwyg').innerHTML = a.content || '';
-setEditMode('wysiwyg');
+  $('#a-wysiwyg').innerHTML = a.content || '';
+  setEditMode('wysiwyg');
   $('#a-featured').checked = !!a.featured;
   articleTags = (a.tags || []).slice();
   renderArticleTags();
@@ -1647,9 +1678,9 @@ function bulkArticleDelete(){
 }
 
 /* ============================================================
-   WYSIWYG Editor + Smart Paste
+   WYSIWYG Editor
    ============================================================ */
-var EDIT_MODE = 'wysiwyg'; /* 'wysiwyg' | 'html' */
+var EDIT_MODE = 'wysiwyg';
 
 function setEditMode(mode){
   EDIT_MODE = mode;
@@ -1666,15 +1697,11 @@ function setEditMode(mode){
     wys.focus();
   }
 }
-
 function getEditorContent(){
   return EDIT_MODE === 'wysiwyg' ? ($('#a-wysiwyg').innerHTML || '') : ($('#a-content').value || '');
 }
-
-/* تنفيذ أوامر التنسيق (تعمل على التحديد الحالي) */
 function execCmd(cmd, value){
   if (EDIT_MODE === 'html'){
-    // في وضع HTML: نضيف الوسم عند موضع المؤشر
     var ta = $('#a-content');
     var snippet = '';
     var map = {
@@ -1692,7 +1719,6 @@ function execCmd(cmd, value){
     ta.selectionStart = ta.selectionEnd = start + snippet.length;
     return;
   }
-  // في وضع WYSIWYG
   var wys = $('#a-wysiwyg');
   wys.focus();
   if (cmd === 'createLink'){
@@ -1706,8 +1732,6 @@ function execCmd(cmd, value){
   }
   document.execCommand(cmd, false, null);
 }
-
-/* لصق ذكي: نحوّل أي محتوى ملصوق إلى فقرات HTML نظيفة */
 function setupSmartPaste(){
   var wys = $('#a-wysiwyg');
   if (!wys) return;
@@ -1717,33 +1741,22 @@ function setupSmartPaste(){
     var html = cd.getData('text/html');
     var text = cd.getData('text/plain');
     var clean = '';
-    if (html && html.trim()){
-      clean = sanitizePastedHTML(html);
-    }
-    if (!clean || !clean.trim()){
-      clean = plainTextToHTML(text);
-    }
+    if (html && html.trim()){ clean = sanitizePastedHTML(html); }
+    if (!clean || !clean.trim()){ clean = plainTextToHTML(text); }
     document.execCommand('insertHTML', false, clean);
   });
-  // إزالة أي أنماط inline قد تتسرب أثناء الكتابة
-  wys.addEventListener('keyup', function(){});
 }
-
-/* تنظيف HTML الملصوق من أي أنماط أو وسوم غريبة */
 function sanitizePastedHTML(html){
   var tmp = document.createElement('div');
   tmp.innerHTML = html;
-  // إزالة العناصر الخطيرة
   ['script','style','meta','link','iframe','object','embed','form','input','button','svg','noscript'].forEach(function(tag){
     Array.prototype.forEach.call(tmp.querySelectorAll(tag), function(el){ el.remove(); });
   });
   var allowedTags = ['P','BR','H1','H2','H3','H4','H5','H6','STRONG','B','EM','I','U','S','UL','OL','LI','BLOCKQUOTE','CODE','PRE','A','IMG','SPAN','DIV','HR','TABLE','THEAD','TBODY','TR','TD','TH'];
   var attrsAllowed = { 'A':['href','title'], 'IMG':['src','alt'] };
-  // معالجة كل العناصر
   Array.prototype.slice.call(tmp.querySelectorAll('*')).forEach(function(el){
     var tag = el.tagName;
     if (allowedTags.indexOf(tag) === -1){
-      // استبدل العنصر بمحتواه النصي
       var txt = document.createTextNode(el.textContent || '');
       if (el.parentNode) el.parentNode.replaceChild(txt, el);
       return;
@@ -1755,8 +1768,6 @@ function sanitizePastedHTML(html){
   });
   return tmp.innerHTML;
 }
-
-/* تحويل نص عادي إلى HTML مع فقرات وقوائم */
 function plainTextToHTML(text){
   if (!text) return '';
   text = String(text).replace(/\r\n/g,'\n').replace(/\r/g,'\n').trim();
@@ -1783,14 +1794,221 @@ function plainTextToHTML(text){
   return out.join('\n');
 }
 
-function escapeHTML(s){
-  return String(s).replace(/[&<>"']/g, function(m){
-    return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[m];
+/* ============================================================
+   GAMES
+   ============================================================ */
+var selectedGames = new Set();
+
+function renderGamesTable(){
+  var search = ($('#game-search').value||'').toLowerCase();
+  var filterCat = $('#game-filter').value;
+
+  $('#game-filter').innerHTML = '<option value="">كل التصنيفات</option>' + GAMES_STATE.categories.map(function(c){
+    return '<option value="'+escapeHtml(c.id)+'"'+(filterCat===c.id?' selected':'')+'>'+c.icon+' '+escapeHtml(c.name)+'</option>';
+  }).join('');
+
+  var list = GAMES_STATE.games.filter(function(g){
+    if (filterCat && g.category !== filterCat) return false;
+    if (!search) return true;
+    return (g.title+' '+g.id+' '+(g.description||'')).toLowerCase().indexOf(search) !== -1;
+  });
+
+  var tb = $('#game-tbody');
+  if (!list.length){
+    tb.innerHTML = '<tr><td colspan="5" class="empty-row"><div class="big">🎮</div><div>لا توجد ألعاب</div></td></tr>';
+    return;
+  }
+
+  tb.innerHTML = list.map(function(g){
+    var cat = GAMES_STATE.categories.filter(function(c){return c.id===g.category;})[0] || {icon:'🎮',name:g.category||'—'};
+    var rating = Number(g.rating||0).toFixed(1);
+    return '<tr>'+
+      '<td><div class="cell-thumb">'+
+        '<div class="thumb" style="--c1:'+(g.c1||'#F59E0B')+';--c2:'+(g.c2||'#FBBF24')+'">'+(g.image?'<img src="'+escapeHtml(g.image)+'" onerror="this.parentNode.textContent=\''+(g.emoji||'🎮')+'\'">':(g.emoji||'🎮'))+'</div>'+
+        '<div style="min-width:0"><div class="cell-name">'+escapeHtml(g.title)+'</div><div class="cell-id">'+escapeHtml(g.id)+'</div></div>'+
+      '</div></td>'+
+      '<td><span class="pill">'+cat.icon+' '+escapeHtml(cat.name)+'</span></td>'+
+      '<td style="font-weight:700">'+(rating!=='0.0'?'⭐ '+rating:'—')+'</td>'+
+      '<td>'+(g.featured?'<span class="pill ok">⭐ مميز</span>':'<span class="muted">—</span>')+'</td>'+
+      '<td><div class="row-actions">'+
+        '<button class="btn btn-outline btn-sm" onclick="ADMIN.editGame(\''+escapeHtml(g.id)+'\')">✏️</button>'+
+        '<button class="btn btn-outline btn-sm" onclick="ADMIN.duplicateGame(\''+escapeHtml(g.id)+'\')">📋</button>'+
+        '<button class="btn btn-danger btn-sm" onclick="ADMIN.deleteGame(\''+escapeHtml(g.id)+'\')">🗑️</button>'+
+      '</div></td>'+
+    '</tr>';
+  }).join('');
+
+  if ($('#game-count-line')) $('#game-count-line').textContent = GAMES_STATE.games.length + ' لعبة في ' + GAMES_STATE.categories.length + ' تصنيف';
+}
+
+function fillGameCategorySelect(sel){
+  var s = $('#gm-category');
+  if (!s) return;
+  s.innerHTML = '<option value="">بدون تصنيف</option>' + GAMES_STATE.categories.map(function(c){
+    return '<option value="'+escapeHtml(c.id)+'"'+(sel===c.id?' selected':'')+'>'+c.icon+' '+escapeHtml(c.name)+'</option>';
+  }).join('');
+}
+
+function newGame(){
+  $('#game-form').reset();
+  $('#g-editing').value = '';
+  $('#gm-emoji').value = '🎮';
+  $('#gm-c1').value = '#F59E0B';
+  $('#gm-c2').value = '#FBBF24';
+  $('#gm-rating').value = '4.5';
+  $('#game-editor-title').textContent = '➕ إضافة لعبة جديدة';
+  fillGameCategorySelect();
+  goSection('game-editor');
+}
+
+function editGame(id){
+  var g = GAMES_STATE.games.filter(function(x){ return x.id===id; })[0];
+  if (!g) return;
+  $('#g-editing').value = g.id;
+  $('#gm-id').value = g.id;
+  $('#gm-title').value = g.title || '';
+  fillGameCategorySelect(g.category);
+  $('#gm-developer').value = g.developer || '';
+  $('#gm-description').value = g.description || '';
+  $('#gm-emoji').value = g.emoji || '🎮';
+  $('#gm-image').value = g.image || '';
+  $('#gm-c1').value = g.c1 || '#F59E0B';
+  $('#gm-c2').value = g.c2 || '#FBBF24';
+  $('#gm-rating').value = g.rating || 4.5;
+  $('#gm-players').value = g.players || '';
+  $('#gm-size').value = g.size || '';
+  $('#gm-version').value = g.version || '';
+  $('#gm-url').value = g.url || '';
+  $('#gm-badge').value = g.badge || '';
+  $('#gm-featured').checked = !!g.featured;
+  $('#game-editor-title').textContent = '✏️ تعديل: ' + g.title;
+  goSection('game-editor');
+}
+
+function saveGame(e){
+  e.preventDefault();
+  var editing = $('#g-editing').value;
+  var id = $('#gm-id').value.trim();
+  if (!/^[a-z0-9\-]+$/.test(id)){ toast('المعرّف: a-z 0-9 - فقط','err'); return; }
+  if (GAMES_STATE.games.some(function(g){ return g.id===id && g.id!==editing; })){ toast('المعرّف مستخدم','err'); return; }
+
+  var game = {
+    id: id,
+    title: $('#gm-title').value.trim(),
+    category: $('#gm-category').value,
+    developer: $('#gm-developer').value.trim(),
+    description: $('#gm-description').value.trim(),
+    emoji: $('#gm-emoji').value.trim() || '🎮',
+    image: $('#gm-image').value.trim(),
+    c1: $('#gm-c1').value,
+    c2: $('#gm-c2').value,
+    rating: Math.max(0, Math.min(5, parseFloat($('#gm-rating').value) || 0)),
+    players: $('#gm-players').value.trim(),
+    size: $('#gm-size').value.trim(),
+    version: $('#gm-version').value.trim(),
+    url: $('#gm-url').value.trim(),
+    badge: $('#gm-badge').value,
+    featured: $('#gm-featured').checked
+  };
+
+  if (editing){
+    GAMES_STATE.games = GAMES_STATE.games.map(function(g){ return g.id===editing ? game : g; });
+    toast('✅ تم تحديث اللعبة','ok');
+  } else {
+    GAMES_STATE.games.push(game);
+    toast('✅ تمت إضافة اللعبة','ok');
+  }
+  markDirtyGames();
+  updateStats();
+  newGame();
+  goSection('games');
+}
+
+function duplicateGame(id){
+  var g = GAMES_STATE.games.filter(function(x){ return x.id===id; })[0]; if (!g) return;
+  var copy = JSON.parse(JSON.stringify(g));
+  copy.id = g.id + '-copy-' + Math.random().toString(36).slice(2,5);
+  copy.title = g.title + ' (نسخة)';
+  copy.featured = false;
+  GAMES_STATE.games.push(copy);
+  markDirtyGames(); renderGamesTable();
+  toast('تم النسخ','ok');
+}
+
+function deleteGame(id){
+  openModal('حذف اللعبة', 'حذف "'+id+'"؟', function(){
+    GAMES_STATE.games = GAMES_STATE.games.filter(function(g){ return g.id!==id; });
+    markDirtyGames(); renderGamesTable(); updateStats();
+    toast('تم الحذف','ok');
+    closeModal();
   });
 }
 
+function renderGameCats(){
+  var box = $('#game-cats-list');
+  if (!box) return;
+  box.innerHTML = GAMES_STATE.categories.map(function(c){
+    var used = GAMES_STATE.games.filter(function(g){return g.category===c.id;}).length;
+    return '<div style="display:flex;align-items:center;gap:12px;padding:10px 14px;border:1px solid var(--line);border-radius:12px;margin-bottom:8px;background:var(--surface2)">'+
+      '<div style="font-size:20px">'+c.icon+'</div>'+
+      '<div style="flex:1"><b>'+escapeHtml(c.name)+'</b> <span class="cell-id">· '+used+' لعبة</span></div>'+
+      '<button class="btn btn-danger btn-sm" onclick="ADMIN.deleteGameCategory(\''+escapeHtml(c.id)+'\')">🗑️</button>'+
+    '</div>';
+  }).join('');
+}
+
+function addGameCategory(){
+  var id = $('#gc-id').value.trim();
+  var name = $('#gc-name').value.trim();
+  var icon = $('#gc-icon').value.trim() || '🎮';
+  if (!id || !name){ toast('املأ المعرّف والاسم','err'); return; }
+  if (!/^[a-z0-9\-]+$/.test(id)){ toast('المعرّف: a-z 0-9 - فقط','err'); return; }
+  if (GAMES_STATE.categories.some(function(c){ return c.id===id; })){ toast('التصنيف موجود','err'); return; }
+  GAMES_STATE.categories.push({id:id, name:name, icon:icon});
+  markDirtyGames();
+  $('#gc-id').value = ''; $('#gc-name').value = ''; $('#gc-icon').value = '';
+  renderGameCats();
+  toast('✅ تمت الإضافة','ok');
+}
+
+function deleteGameCategory(id){
+  var used = GAMES_STATE.games.filter(function(g){ return g.category===id; }).length;
+  if (used>0){ toast('لا يمكن — '+used+' لعبة في هذا التصنيف','err'); return; }
+  GAMES_STATE.categories = GAMES_STATE.categories.filter(function(c){ return c.id!==id; });
+  markDirtyGames();
+  renderGameCats();
+  toast('تم الحذف','ok');
+}
+
+function fillGameSettings(){
+  var s = GAMES_STATE.settings;
+  if ($('#gs-appName')) $('#gs-appName').value = s.appName || '';
+  if ($('#gs-logoEmoji')) $('#gs-logoEmoji').value = s.logoEmoji || '';
+  if ($('#gs-logoImage')) $('#gs-logoImage').value = s.logoImage || '';
+  if ($('#gs-tagline')) $('#gs-tagline').value = s.tagline || '';
+  if ($('#gs-featuredId')) $('#gs-featuredId').value = s.featuredId || '';
+  if ($('#gs-primaryColor')) $('#gs-primaryColor').value = s.primaryColor || '#F59E0B';
+  if ($('#gs-primaryColorText')) $('#gs-primaryColorText').value = s.primaryColor || '#F59E0B';
+  if ($('#gs-bgColor')) $('#gs-bgColor').value = s.bgColor || '#0F0F1A';
+  if ($('#gs-bgColorText')) $('#gs-bgColorText').value = s.bgColor || '#0F0F1A';
+  renderGameCats();
+}
+
+function saveGameSettings(){
+  var s = GAMES_STATE.settings;
+  s.appName = $('#gs-appName').value.trim() || 'HeroGames';
+  s.logoEmoji = $('#gs-logoEmoji').value.trim() || '🎮';
+  s.logoImage = $('#gs-logoImage').value.trim();
+  s.tagline = $('#gs-tagline').value.trim();
+  s.featuredId = $('#gs-featuredId').value.trim();
+  s.primaryColor = $('#gs-primaryColorText').value.trim() || $('#gs-primaryColor').value;
+  s.bgColor = $('#gs-bgColorText').value.trim() || $('#gs-bgColor').value;
+  markDirtyGames();
+  toast('✅ تم الحفظ — لا تنسَ النشر','ok');
+}
+
 /* ============================================================
-   SETTINGS
+   SETTINGS (Appearance, Hero, Social, SEO, Analytics)
    ============================================================ */
 function fillAppearance(){
   var s = STATE.settings;
@@ -1886,7 +2104,7 @@ function saveAnalytics(){
   markDirtyData(); toast('✅ تم الحفظ','ok');
 }
 
-/* ---------- GitHub ---------- */
+/* ---------- GitHub UI ---------- */
 function fillGitHub(){
   var c = getGH();
   if (!c) return;
@@ -1895,6 +2113,7 @@ function fillGitHub(){
   $('#g-branch').value = c.branch||'main';
   $('#g-path').value = c.path||'data.js';
   $('#g-articles-path').value = c.articlesPath||'articles.js';
+  $('#g-games-path').value = c.gamesPath||'games.js';
   $('#g-token').value = c.token||'';
   var st = $('#gh-status');
   if (st) st.innerHTML = '<div class="notice ok">✅ متصل: <b>'+escapeHtml(c.owner)+'/'+escapeHtml(c.repo)+'</b></div>';
@@ -1904,9 +2123,10 @@ function readGH(){
       branch=$('#g-branch').value.trim()||'main',
       path=$('#g-path').value.trim()||'data.js',
       articlesPath=$('#g-articles-path').value.trim()||'articles.js',
+      gamesPath=$('#g-games-path').value.trim()||'games.js',
       token=$('#g-token').value.trim();
   if (!owner||!repo||!token) return null;
-  return {owner:owner,repo:repo,branch:branch,path:path,articlesPath:articlesPath,token:token};
+  return {owner:owner,repo:repo,branch:branch,path:path,articlesPath:articlesPath,gamesPath:gamesPath,token:token};
 }
 function saveGitHub(){
   var c = readGH();
@@ -1923,9 +2143,11 @@ async function testGitHub(){
   try {
     var r1 = await ghGet(c, c.path);
     var r2 = await ghGet(c, c.articlesPath);
+    var r3 = await ghGet(c, c.gamesPath);
     var msgs = [];
-    msgs.push('📦 <code>'+escapeHtml(c.path)+'</code>: ' + (r1.exists ? 'موجود (sha: '+r1.sha.slice(0,7)+')' : 'سيُنشأ عند النشر'));
-    msgs.push('📝 <code>'+escapeHtml(c.articlesPath)+'</code>: ' + (r2.exists ? 'موجود (sha: '+r2.sha.slice(0,7)+')' : 'سيُنشأ عند النشر'));
+    msgs.push('📦 <code>'+escapeHtml(c.path)+'</code>: ' + (r1.exists ? 'موجود (sha: '+r1.sha.slice(0,7)+')' : 'سيُنشأ'));
+    msgs.push('📝 <code>'+escapeHtml(c.articlesPath)+'</code>: ' + (r2.exists ? 'موجود (sha: '+r2.sha.slice(0,7)+')' : 'سيُنشأ'));
+    msgs.push('🎮 <code>'+escapeHtml(c.gamesPath)+'</code>: ' + (r3.exists ? 'موجود (sha: '+r3.sha.slice(0,7)+')' : 'سيُنشأ'));
     st.innerHTML = '<div class="notice ok">✅ الاتصال ناجح<br>'+msgs.join('<br>')+'</div>';
     toast('✅ نجح الاتصال','ok');
   } catch(e){
@@ -1949,11 +2171,14 @@ function switchRawTab(tab){
   rawTab = tab;
   $('#raw-tab-products').classList.toggle('active', tab==='products');
   $('#raw-tab-articles').classList.toggle('active', tab==='articles');
+  $('#raw-tab-games').classList.toggle('active', tab==='games');
   loadRaw();
 }
 function loadRaw(){
   if (rawTab === 'articles'){
     $('#raw-json').value = JSON.stringify(ARTICLES_STATE, null, 2);
+  } else if (rawTab === 'games'){
+    $('#raw-json').value = JSON.stringify(GAMES_STATE, null, 2);
   } else {
     $('#raw-json').value = JSON.stringify(STATE, null, 2);
   }
@@ -1965,6 +2190,12 @@ function applyRaw(){
       if (!d.articles || !Array.isArray(d.articles)) throw new Error('bad articles format');
       ARTICLES_STATE.articles = d.articles;
       markDirtyArticles();
+    } else if (rawTab === 'games'){
+      if (!d.games || !Array.isArray(d.games)) throw new Error('bad games format');
+      GAMES_STATE.games = d.games;
+      if (d.categories) GAMES_STATE.categories = d.categories;
+      if (d.settings) GAMES_STATE.settings = Object.assign(GAMES_STATE.settings, d.settings);
+      markDirtyGames();
     } else {
       if (!d.products || !Array.isArray(d.products)) throw new Error('bad data format');
       STATE.categories = d.categories || [];
@@ -1979,11 +2210,9 @@ function applyRaw(){
 }
 function downloadBackup(){
   var content, filename;
-  if (rawTab === 'articles'){
-    content = generateArticlesJs(); filename = 'articles.js';
-  } else {
-    content = generateDataJs(); filename = 'data.js';
-  }
+  if (rawTab === 'articles'){ content = generateArticlesJs(); filename = 'articles.js'; }
+  else if (rawTab === 'games'){ content = generateGamesJs(); filename = 'games.js'; }
+  else { content = generateDataJs(); filename = 'data.js'; }
   var blob = new Blob([content], {type:'text/javascript'});
   var a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
@@ -1995,11 +2224,12 @@ function downloadBackup(){
 
 /* ---------- Danger ---------- */
 function resetAll(){
-  openModal('⚠️ إعادة تعيين كاملة', 'سيتم حذف كل المنتجات والتصنيفات والمقالات. متابعة؟', function(){
+  openModal('⚠️ إعادة تعيين كاملة', 'سيتم حذف كل المنتجات والتصنيفات والمقالات والألعاب. متابعة؟', function(){
     STATE = { version:1, updatedAt:new Date().toISOString(), categories:[], products:[],
       settings:Object.assign({}, STATE.settings), analytics:Object.assign({}, STATE.analytics) };
     ARTICLES_STATE = { version:1, updatedAt:new Date().toISOString(), articles:[] };
-    markDirtyData(); markDirtyArticles();
+    GAMES_STATE = { version:1, updatedAt:new Date().toISOString(), categories:GAMES_STATE.categories, settings:GAMES_STATE.settings, games:[] };
+    markDirtyData(); markDirtyArticles(); markDirtyGames();
     updateStats(); goSection('dashboard');
     toast('تمت إعادة التعيين','ok'); closeModal();
   });
@@ -2022,221 +2252,13 @@ function deleteAllArticles(){
     toast('تم الحذف','ok'); closeModal();
   });
 }
-/* ============================================================
-   GAMES MANAGEMENT
-   ============================================================ */
-var selectedGames = new Set();
-
-function renderGamesTable(){
-  var search = ($('#game-search').value||'').toLowerCase();
-  var filterCat = $('#game-filter').value;
-
-  $('#game-filter').innerHTML = '<option value="">كل التصنيفات</option>' + GAMES_STATE.categories.map(function(c){
-    return '<option value="'+escapeHtml(c.id)+'"'+(filterCat===c.id?' selected':'')+'>'+c.icon+' '+escapeHtml(c.name)+'</option>';
-  }).join('');
-
-  var list = GAMES_STATE.games.filter(function(g){
-    if (filterCat && g.category !== filterCat) return false;
-    if (!search) return true;
-    return (g.title+' '+g.id+' '+(g.description||'')).toLowerCase().indexOf(search) !== -1;
-  });
-
-  var tb = $('#game-tbody');
-  if (!list.length){
-    tb.innerHTML = '<tr><td colspan="5" class="empty-row"><div class="big">🎮</div><div>لا توجد ألعاب</div></td></tr>';
-    return;
-  }
-
-  tb.innerHTML = list.map(function(g){
-    var cat = GAMES_STATE.categories.filter(function(c){return c.id===g.category;})[0] || {icon:'🎮',name:g.category||'—'};
-    var rating = Number(g.rating||0).toFixed(1);
-    return '<tr>'+
-      '<td><div class="cell-thumb">'+
-        '<div class="thumb" style="--c1:'+(g.c1||'#F59E0B')+';--c2:'+(g.c2||'#FBBF24')+'">'+(g.image?'<img src="'+escapeHtml(g.image)+'" onerror="this.parentNode.textContent=\''+(g.emoji||'🎮')+'\'">':(g.emoji||'🎮'))+'</div>'+
-        '<div style="min-width:0"><div class="cell-name">'+escapeHtml(g.title)+'</div><div class="cell-id">'+escapeHtml(g.id)+'</div></div>'+
-      '</div></td>'+
-      '<td><span class="pill">'+cat.icon+' '+escapeHtml(cat.name)+'</span></td>'+
-      '<td style="font-weight:700">'+(rating!=='0.0'?'⭐ '+rating:'—')+'</td>'+
-      '<td>'+(g.featured?'<span class="pill ok">⭐ مميز</span>':'<span class="muted">—</span>')+'</td>'+
-      '<td><div class="row-actions">'+
-        '<button class="btn btn-outline btn-sm" onclick="ADMIN.editGame(\''+escapeHtml(g.id)+'\')">✏️</button>'+
-        '<button class="btn btn-outline btn-sm" onclick="ADMIN.duplicateGame(\''+escapeHtml(g.id)+'\')">📋</button>'+
-        '<button class="btn btn-danger btn-sm" onclick="ADMIN.deleteGame(\''+escapeHtml(g.id)+'\')">🗑️</button>'+
-      '</div></td>'+
-    '</tr>';
-  }).join('');
-
-  $('#game-count-line').textContent = GAMES_STATE.games.length + ' لعبة في ' + GAMES_STATE.categories.length + ' تصنيف';
-}
-
-function fillGameCategorySelect(selected){
-  var sel = $('#gm-category');
-  if (!sel) return;
-  sel.innerHTML = '<option value="">بدون تصنيف</option>' + GAMES_STATE.categories.map(function(c){
-    return '<option value="'+escapeHtml(c.id)+'"'+(selected===c.id?' selected':'')+'>'+c.icon+' '+escapeHtml(c.name)+'</option>';
-  }).join('');
-}
-
-function newGame(){
-  $('#game-form').reset();
-  $('#g-editing').value = '';
-  $('#gm-emoji').value = '🎮';
-  $('#gm-c1').value = '#F59E0B';
-  $('#gm-c2').value = '#FBBF24';
-  $('#gm-rating').value = '4.5';
-  $('#game-editor-title').textContent = '➕ إضافة لعبة جديدة';
-  fillGameCategorySelect();
-  goSection('game-editor');
-}
-
-function editGame(id){
-  var g = GAMES_STATE.games.filter(function(x){ return x.id===id; })[0];
-  if (!g) return;
-  $('#g-editing').value = g.id;
-  $('#gm-id').value = g.id;
-  $('#gm-title').value = g.title || '';
-  fillGameCategorySelect(g.category);
-  $('#gm-developer').value = g.developer || '';
-  $('#gm-description').value = g.description || '';
-  $('#gm-emoji').value = g.emoji || '🎮';
-  $('#gm-image').value = g.image || '';
-  $('#gm-c1').value = g.c1 || '#F59E0B';
-  $('#gm-c2').value = g.c2 || '#FBBF24';
-  $('#gm-rating').value = g.rating || 4.5;
-  $('#gm-players').value = g.players || '';
-  $('#gm-size').value = g.size || '';
-  $('#gm-version').value = g.version || '';
-  $('#gm-url').value = g.url || '';
-  $('#gm-badge').value = g.badge || '';
-  $('#gm-featured').checked = !!g.featured;
-  $('#game-editor-title').textContent = '✏️ تعديل: ' + g.title;
-  goSection('game-editor');
-}
-
-function saveGame(e){
-  e.preventDefault();
-  var editing = $('#g-editing').value;
-  var id = $('#gm-id').value.trim();
-  if (!/^[a-z0-9\-]+$/.test(id)){ toast('المعرّف: a-z 0-9 - فقط','err'); return; }
-  if (GAMES_STATE.games.some(function(g){ return g.id===id && g.id!==editing; })){ toast('المعرّف مستخدم','err'); return; }
-
-  var game = {
-    id: id,
-    title: $('#gm-title').value.trim(),
-    category: $('#gm-category').value,
-    developer: $('#gm-developer').value.trim(),
-    description: $('#gm-description').value.trim(),
-    emoji: $('#gm-emoji').value.trim() || '🎮',
-    image: $('#gm-image').value.trim(),
-    c1: $('#gm-c1').value,
-    c2: $('#gm-c2').value,
-    rating: Math.max(0, Math.min(5, parseFloat($('#gm-rating').value) || 0)),
-    players: $('#gm-players').value.trim(),
-    size: $('#gm-size').value.trim(),
-    version: $('#gm-version').value.trim(),
-    url: $('#gm-url').value.trim(),
-    badge: $('#gm-badge').value,
-    featured: $('#gm-featured').checked
-  };
-
-  if (editing){
-    GAMES_STATE.games = GAMES_STATE.games.map(function(g){ return g.id===editing ? game : g; });
-    toast('✅ تم تحديث اللعبة','ok');
-  } else {
-    GAMES_STATE.games.push(game);
-    toast('✅ تمت إضافة اللعبة','ok');
-  }
-  DIRTY_GAMES = true;
-  updatePublishStatus();
-  newGame();
-  goSection('games');
-}
-
-function duplicateGame(id){
-  var g = GAMES_STATE.games.filter(function(x){ return x.id===id; })[0]; if (!g) return;
-  var copy = JSON.parse(JSON.stringify(g));
-  copy.id = g.id + '-copy-' + Math.random().toString(36).slice(2,5);
-  copy.title = g.title + ' (نسخة)';
-  copy.featured = false;
-  GAMES_STATE.games.push(copy);
-  DIRTY_GAMES = true;
-  renderGamesTable();
-  toast('تم النسخ','ok');
-}
-
-function deleteGame(id){
-  openModal('حذف اللعبة', 'حذف "'+id+'"؟', function(){
-    GAMES_STATE.games = GAMES_STATE.games.filter(function(g){ return g.id!==id; });
-    DIRTY_GAMES = true;
-    renderGamesTable();
-    toast('تم الحذف','ok');
-    closeModal();
+function deleteAllGames(){
+  openModal('حذف كل الألعاب', 'لا يمكن التراجع.', function(){
+    GAMES_STATE.games = []; markDirtyGames(); updateStats(); goSection('games');
+    toast('تم الحذف','ok'); closeModal();
   });
 }
 
-function renderGameCats(){
-  var box = $('#game-cats-list');
-  if (!box) return;
-  box.innerHTML = GAMES_STATE.categories.map(function(c){
-    var used = GAMES_STATE.games.filter(function(g){return g.category===c.id;}).length;
-    return '<div style="display:flex;align-items:center;gap:12px;padding:10px 14px;border:1px solid var(--line);border-radius:12px;margin-bottom:8px;background:var(--surface2)">'+
-      '<div style="font-size:20px">'+c.icon+'</div>'+
-      '<div style="flex:1"><b>'+escapeHtml(c.name)+'</b> <span class="cell-id">· '+used+' لعبة</span></div>'+
-      '<button class="btn btn-danger btn-sm" onclick="ADMIN.deleteGameCategory(\''+escapeHtml(c.id)+'\')">🗑️</button>'+
-    '</div>';
-  }).join('');
-}
-
-function addGameCategory(){
-  var id = $('#gc-id').value.trim();
-  var name = $('#gc-name').value.trim();
-  var icon = $('#gc-icon').value.trim() || '🎮';
-  if (!id || !name){ toast('املأ المعرّف والاسم','err'); return; }
-  if (GAMES_STATE.categories.some(function(c){ return c.id===id; })){ toast('التصنيف موجود','err'); return; }
-  GAMES_STATE.categories.push({id:id, name:name, icon:icon});
-  DIRTY_GAMES = true;
-  $('#gc-id').value = ''; $('#gc-name').value = ''; $('#gc-icon').value = '';
-  renderGameCats();
-  toast('✅ تمت الإضافة','ok');
-}
-
-function deleteGameCategory(id){
-  var used = GAMES_STATE.games.filter(function(g){ return g.category===id; }).length;
-  if (used>0){ toast('لا يمكن — '+used+' لعبة في هذا التصنيف','err'); return; }
-  GAMES_STATE.categories = GAMES_STATE.categories.filter(function(c){ return c.id!==id; });
-  DIRTY_GAMES = true;
-  renderGameCats();
-  toast('تم الحذف','ok');
-}
-
-function fillGameSettings(){
-  var s = GAMES_STATE.settings;
-  $('#gs-appName').value = s.appName || '';
-  $('#gs-logoEmoji').value = s.logoEmoji || '';
-  $('#gs-logoImage').value = s.logoImage || '';
-  $('#gs-tagline').value = s.tagline || '';
-  $('#gs-featuredId').value = s.featuredId || '';
-  $('#gs-primaryColor').value = s.primaryColor || '#F59E0B';
-  $('#gs-primaryColorText').value = s.primaryColor || '#F59E0B';
-  $('#gs-bgColor').value = s.bgColor || '#0F0F1A';
-  $('#gs-bgColorText').value = s.bgColor || '#0F0F1A';
-  renderGameCats();
-}
-
-function saveGameSettings(){
-  var s = GAMES_STATE.settings;
-  s.appName = $('#gs-appName').value.trim() || 'HeroGames';
-  s.logoEmoji = $('#gs-logoEmoji').value.trim() || '🎮';
-  s.logoImage = $('#gs-logoImage').value.trim();
-  s.tagline = $('#gs-tagline').value.trim();
-  s.featuredId = $('#gs-featuredId').value.trim();
-  s.primaryColor = $('#gs-primaryColorText').value.trim() || $('#gs-primaryColor').value;
-  s.bgColor = $('#gs-bgColorText').value.trim() || $('#gs-bgColor').value;
-  DIRTY_GAMES = true;
-  updatePublishStatus();
-  toast('✅ تم الحفظ — لا تنسَ النشر','ok');
-}
-  
 /* ---------- Modal ---------- */
 function openModal(title, body, onConfirm){
   $('#modal-title').textContent = title;
@@ -2249,13 +2271,117 @@ function openModal(title, body, onConfirm){
 }
 function closeModal(){ $('#modal').classList.remove('show'); }
 
-/* ---------- Init ---------- */
+/* ============================================================
+   LOAD FROM GITHUB
+   ============================================================ */
+function extractData(txt, varName){
+  if (!txt) return null;
+  var re = new RegExp('window\\.' + varName + '\\s*=\\s*');
+  var match = txt.match(re);
+  if (!match) return null;
+  var start = match.index + match[0].length;
+  var jsonStart = txt.indexOf('{', start);
+  if (jsonStart === -1) return null;
+  var jsonEnd = txt.lastIndexOf('}');
+  if (jsonEnd === -1 || jsonEnd < jsonStart) return null;
+  try { return JSON.parse(txt.substring(jsonStart, jsonEnd + 1)); }
+  catch(e){ console.warn('JSON parse error for '+varName+':', e); return null; }
+}
+
+async function loadFromGitHub(){
+  var cfg = getGH();
+  if (!cfg || !cfg.owner || !cfg.repo){
+    console.warn('[load] GitHub not configured');
+    return false;
+  }
+
+  var branch = cfg.branch || 'main';
+  var base = 'https://raw.githubusercontent.com/' + cfg.owner + '/' + cfg.repo + '/' + branch + '/';
+  var loaded = false;
+
+  // data.js
+  try {
+    var r1 = await fetch(base + (cfg.path || 'data.js') + '?t=' + Date.now(), { cache: 'no-store' });
+    if (r1.ok){
+      var txt1 = await r1.text();
+      var d1 = extractData(txt1, 'HERO_DATA');
+      if (d1){
+        STATE.categories = d1.categories || [];
+        STATE.products   = d1.products   || [];
+        STATE.settings   = Object.assign(STATE.settings, d1.settings || {});
+        STATE.analytics  = Object.assign(STATE.analytics, d1.analytics || {});
+        console.log('[load] data.js ✓ — ' + STATE.products.length + ' منتج، ' + STATE.categories.length + ' تصنيف');
+        loaded = true;
+      }
+    } else { console.warn('[load] data.js status:', r1.status); }
+  } catch(e){ console.warn('[load] data.js fetch error:', e); }
+
+  // articles.js
+  try {
+    var r2 = await fetch(base + (cfg.articlesPath || 'articles.js') + '?t=' + Date.now(), { cache: 'no-store' });
+    if (r2.ok){
+      var txt2 = await r2.text();
+      var d2 = extractData(txt2, 'HERO_ARTICLES');
+      if (d2){
+        ARTICLES_STATE.articles = d2.articles || [];
+        console.log('[load] articles.js ✓ — ' + ARTICLES_STATE.articles.length + ' مقال');
+        loaded = true;
+      }
+    } else { console.warn('[load] articles.js status:', r2.status); }
+  } catch(e){ console.warn('[load] articles.js fetch error:', e); }
+
+  // games.js
+  try {
+    var r3 = await fetch(base + (cfg.gamesPath || 'games.js') + '?t=' + Date.now(), { cache: 'no-store' });
+    if (r3.ok){
+      var txt3 = await r3.text();
+      var d3 = extractData(txt3, 'HERO_GAMES');
+      if (d3){
+        GAMES_STATE.games = d3.games || [];
+        if (d3.categories) GAMES_STATE.categories = d3.categories;
+        if (d3.settings) GAMES_STATE.settings = Object.assign(GAMES_STATE.settings, d3.settings);
+        console.log('[load] games.js ✓ — ' + GAMES_STATE.games.length + ' لعبة');
+        loaded = true;
+      } else {
+        console.warn('[load] games.js — تعذّر استخراج البيانات. تحقق من صحة JSON.');
+      }
+    } else { console.warn('[load] games.js status:', r3.status); }
+  } catch(e){ console.warn('[load] games.js fetch error:', e); }
+
+  renderGameCats();
+  fillGameSettings();
+  updateGameStats();
+  return loaded;
+}
+
+async function reloadFromGitHub(){
+  toast('🔄 جاري إعادة التحميل من GitHub...');
+  var ok = await loadFromGitHub();
+  if (ok){
+    fillCategorySelect();
+    renderTags();
+    renderArticleTags();
+    updateStats();
+    refreshDashboard();
+    if (!$('[data-sec="products"]').hidden) renderProductsTable();
+    if (!$('[data-sec="articles"]').hidden) renderArticlesTable();
+    if (!$('[data-sec="games"]').hidden) renderGamesTable();
+    if (!$('[data-sec="categories"]').hidden) renderCategories();
+    toast('✅ تم التحديث — ' + STATE.products.length + ' منتج، ' + ARTICLES_STATE.articles.length + ' مقال، ' + GAMES_STATE.games.length + ' لعبة', 'ok');
+  } else {
+    toast('❌ فشل التحميل — تحقق من إعدادات GitHub', 'err');
+  }
+}
+
+/* ============================================================
+   BIND UI
+   ============================================================ */
 function bindUI(){
   $$('.sb-link').forEach(function(a){ a.addEventListener('click', function(){ goSection(a.dataset.sec); }); });
   $('#hamburger').addEventListener('click', function(){ $('#sidebar').classList.toggle('open'); });
   $('#publish-btn').addEventListener('click', publish);
 
-  // products
+  // Products
   $('#prod-search').addEventListener('input', function(){ renderProductsTable(); });
   $('#prod-filter').addEventListener('change', function(){ renderProductsTable(); });
   $('#check-all').addEventListener('change', function(){
@@ -2270,7 +2396,7 @@ function bindUI(){
     renderProductsTable();
   });
 
-  // articles
+  // Articles
   $('#art-search').addEventListener('input', function(){ renderArticlesTable(); });
   $('#art-filter').addEventListener('change', function(){ renderArticlesTable(); });
   $('#art-check-all').addEventListener('change', function(){
@@ -2287,10 +2413,12 @@ function bindUI(){
     list.forEach(function(a){ this.checked ? selectedArticles.add(a.id) : selectedArticles.delete(a.id); }, this);
     renderArticlesTable();
   });
-    // games
+
+  // Games
   if ($('#game-search')) $('#game-search').addEventListener('input', renderGamesTable);
   if ($('#game-filter')) $('#game-filter').addEventListener('change', renderGamesTable);
-  // color sync للعبة والإعدادات
+
+  // Color sync - games settings
   [['gs-primaryColor','gs-primaryColorText'],['gs-bgColor','gs-bgColorText']].forEach(function(pair){
     var a = $('#'+pair[0]), b = $('#'+pair[1]);
     if (a && b){
@@ -2299,13 +2427,16 @@ function bindUI(){
     }
   });
 
-  // color sync
+  // Color sync - store
   [['s-primaryColor','s-primaryColorText'],['s-secondaryColor','s-secondaryColorText'],['s-accentColor','s-accentColorText']].forEach(function(pair){
-    $('#'+pair[0]).addEventListener('input', function(){ $('#'+pair[1]).value = this.value; });
-    $('#'+pair[1]).addEventListener('input', function(){ var v=this.value.trim(); if (/^#[0-9a-fA-F]{6}$/.test(v)) $('#'+pair[0]).value = v; });
+    var a = $('#'+pair[0]), b = $('#'+pair[1]);
+    if (a && b){
+      a.addEventListener('input', function(){ b.value = this.value; });
+      b.addEventListener('input', function(){ var v=this.value.trim(); if (/^#[0-9a-fA-F]{6}$/.test(v)) a.value = v; });
+    }
   });
 
-  // article id auto-suggest from title
+  // Article id auto-suggest from title
   $('#a-title').addEventListener('input', function(){
     if ($('#a-editing').value) return;
     var cur = $('#a-id').value;
@@ -2316,153 +2447,33 @@ function bindUI(){
     }
   });
 
-  // modal close on overlay
+  // Game id auto-suggest from title
+  if ($('#gm-title')){
+    $('#gm-title').addEventListener('input', function(){
+      if ($('#g-editing').value) return;
+      var cur = $('#gm-id').value;
+      if (!cur || cur === $('#gm-id').dataset.auto){
+        var s = slugify(this.value);
+        $('#gm-id').value = s;
+        $('#gm-id').dataset.auto = s;
+      }
+    });
+  }
+
   $('#modal').addEventListener('click', function(e){ if (e.target === this) closeModal(); });
 
-  // unsaved changes warning
   window.addEventListener('beforeunload', function(e){
-    if (DIRTY_DATA || DIRTY_ARTICLES){ e.preventDefault(); e.returnValue = ''; }
+    if (DIRTY_DATA || DIRTY_ARTICLES || DIRTY_GAMES){ e.preventDefault(); e.returnValue = ''; }
   });
 }
 
-function extractData(txt, varName){
-  if (!txt) return null;
-  var re = new RegExp('window\\.' + varName + '\\s*=\\s*');
-  var match = txt.match(re);
-  if (!match) return null;
-  var start = match.index + match[0].length;
-  var jsonStart = txt.indexOf('{', start);
-  if (jsonStart === -1) return null;
-  var jsonEnd = txt.lastIndexOf('}');
-  if (jsonEnd === -1 || jsonEnd < jsonStart) return null;
-  try { return JSON.parse(txt.substring(jsonStart, jsonEnd + 1)); }
-  catch(e){ console.warn('JSON parse error for '+varName+':', e); return null; }
-}
 /* ============================================================
-   GAMES STATE
+   INIT
    ============================================================ */
-var G = window.HERO_GAMES || {};
-var GAMES_STATE = {
-  version: 1,
-  updatedAt: G.updatedAt || new Date().toISOString(),
-  categories: JSON.parse(JSON.stringify(G.categories || [
-    {id:'sport',name:'رياضة',icon:'⚽'},
-    {id:'action',name:'أكشن',icon:'💥'},
-    {id:'puzzle',name:'ألغاز',icon:'🧩'},
-    {id:'kids',name:'أطفال',icon:'🧸'},
-    {id:'arcade',name:'أركيد',icon:'👾'},
-    {id:'strategy',name:'استراتيجية',icon:'♟️'},
-    {id:'racing',name:'سباق',icon:'🏎️'}
-  ])),
-  settings: Object.assign({
-    appName:'HeroGames', tagline:'أفضل الألعاب في مكان واحد',
-    logoImage:'', logoEmoji:'🎮',
-    primaryColor:'#F59E0B', bgColor:'#0F0F1A',
-    featuredId:'', showDailyBonus:true
-  }, G.settings || {}),
-  games: JSON.parse(JSON.stringify(G.games || []))
-};
-
-function generateGamesJs(){
-  GAMES_STATE.updatedAt = new Date().toISOString();
-  return '/* HERO Games data — auto-generated */\nwindow.HERO_GAMES = ' + JSON.stringify(GAMES_STATE, null, 2) + ';\n';
-}
-/* ============================================================
-   إعادة تحميل البيانات من GitHub مباشرة (تتجاوز الكاش)
-   ============================================================ */
-async function loadFromGitHub(){
-  var cfg = getGH();
-  if (!cfg || !cfg.owner || !cfg.repo){
-    console.warn('[load] GitHub not configured');
-    return false;
-  }
-
-  var branch = cfg.branch || 'main';
-  var base = 'https://raw.githubusercontent.com/' + cfg.owner + '/' + cfg.repo + '/' + branch + '/';
-  var loaded = false;
-
-  // جلب data.js
-  try {
-    var r1 = await fetch(base + (cfg.path || 'data.js') + '?t=' + Date.now(), { cache: 'no-store' });
-    if (r1.ok){
-            var txt1 = await r1.text();
-      var d1 = extractData(txt1, 'HERO_DATA');
-      if (d1){
-        STATE.categories = d1.categories || [];
-        STATE.products   = d1.products   || [];
-        STATE.settings   = Object.assign(STATE.settings, d1.settings || {});
-        STATE.analytics  = Object.assign(STATE.analytics, d1.analytics || {});
-        console.log('[load] data.js ✓ — ' + STATE.products.length + ' منتج، ' + STATE.categories.length + ' تصنيف');
-        loaded = true;
-      }
-    } else {
-      console.warn('[load] data.js status:', r1.status);
-    }
-  } catch(e){ console.warn('[load] data.js fetch error:', e); }
-    // جلب games.js
-  try {
-    var r3 = await fetch(base + (cfg.gamesPath || 'games.js') + '?t=' + Date.now(), { cache: 'no-store' });
-    if (r3.ok){
-      var txt3 = await r3.text();
-      var d3 = extractData(txt3, 'HERO_GAMES');
-      if (d3){
-        GAMES_STATE.games = d3.games || [];
-        GAMES_STATE.categories = d3.categories || GAMES_STATE.categories;
-        GAMES_STATE.settings = Object.assign(GAMES_STATE.settings, d3.settings || {});
-        console.log('[load] games.js ✓ — ' + GAMES_STATE.games.length + ' لعبة');
-        loaded = true;
-      }
-    } else {
-      console.warn('[load] games.js status:', r3.status);
-    }
-  } catch(e){ console.warn('[load] games.js fetch error:', e); }
-  
-  // جلب articles.js
-  try {
-    var r2 = await fetch(base + (cfg.articlesPath || 'articles.js') + '?t=' + Date.now(), { cache: 'no-store' });
-    if (r2.ok){
-            var txt2 = await r2.text();
-      var d2 = extractData(txt2, 'HERO_ARTICLES');
-      if (d2){
-        ARTICLES_STATE.articles = d2.articles || [];
-        console.log('[load] articles.js ✓ — ' + ARTICLES_STATE.articles.length + ' مقال');
-        loaded = true;
-      }
-    } else {
-      console.warn('[load] articles.js status:', r2.status);
-    }
-  } catch(e){ console.warn('[load] articles.js fetch error:', e); }
-    // ⭐ أضف هذه الأسطر الثلاثة هنا
-  renderGameCats();
-  fillGameSettings();
-  updateGameStats();
-  return loaded;
-}
-
-  
-/* إعادة تحميل يدوية (مع إعادة تحديث كل الواجهة) */
-async function reloadFromGitHub(){
-  toast('🔄 جاري إعادة التحميل من GitHub...');
-  var ok = await loadFromGitHub();
-  if (ok){
-    fillCategorySelect();
-    renderTags();
-    renderArticleTags();
-    updateStats();
-    refreshDashboard();
-    // إذا كنا في قسم المنتجات أو المقالات، أعِد الرسم
-    if (!$('[data-sec="products"]').hidden) renderProductsTable();
-    if (!$('[data-sec="articles"]').hidden) renderArticlesTable();
-    if (!$('[data-sec="categories"]').hidden) renderCategories();
-    toast('✅ تم التحديث — ' + STATE.products.length + ' منتج، ' + ARTICLES_STATE.articles.length + ' مقال', 'ok');
-  } else {
-    toast('❌ فشل التحميل — تحقق من إعدادات GitHub', 'err');
-  }
-}
-  
 async function init(){
   console.log('[init] بدء التهيئة...');
   bindUI();
+  setupSmartPaste();
   renderTags();
   renderArticleTags();
   fillCategorySelect();
@@ -2470,21 +2481,16 @@ async function init(){
   var cfg = getGH();
   console.log('[init] إعدادات GitHub:', cfg ? '✓' : '❌');
 
-  // ⭐ دائماً اجلب البيانات من GitHub إذا كان الاتصال مضبوطاً
-  // (تجاوز الكاش + يتضمن data.js و articles.js)
   if (cfg && cfg.token){
     console.log('[init] جاري تحميل البيانات من GitHub...');
     var btn = $('#publish-btn');
     if (btn) btn.innerHTML = '<span class="loader"></span> تحميل...';
-    
     var ok = await loadFromGitHub();
-    
     if (btn) btn.innerHTML = '🚀 نشر';
     if (ok){
       fillCategorySelect();
       updateStats();
-      console.log('[init] ✓ تم التحميل — منتجات:', STATE.products.length, '· تصنيفات:', STATE.categories.length, '· مقالات:', ARTICLES_STATE.articles.length);
-      toast('✅ تم التحميل — ' + STATE.products.length + ' منتج، ' + ARTICLES_STATE.articles.length + ' مقال', 'ok');
+      console.log('[init] ✓ تم التحميل — منتجات:', STATE.products.length, '· تصنيفات:', STATE.categories.length, '· مقالات:', ARTICLES_STATE.articles.length, '· ألعاب:', GAMES_STATE.games.length);
     } else {
       console.warn('[init] ⚠️ فشل التحميل من GitHub — سيتم استخدام البيانات المحلية');
     }
@@ -2492,7 +2498,6 @@ async function init(){
     console.log('[init] ℹ️ لا يوجد اتصال GitHub — سيتم استخدام البيانات المحلية');
   }
 
-  // ضمان وجود تصنيف افتراضي (حتى لا يعلق المستخدم)
   if (STATE.categories.length === 0){
     STATE.categories = [
       {id:'tools',      name:'الأدوات',       icon:'🛠️'},
@@ -2503,49 +2508,58 @@ async function init(){
       {id:'services',   name:'الخدمات',       icon:'💼'}
     ];
     fillCategorySelect();
-    console.log('[init] تم تحميل التصنيفات الافتراضية');
   }
 
   updateStats();
+  updateGameStats();
   updatePublishStatus();
   refreshDashboard();
   if (!getGH()) goSection('github');
   else goSection('dashboard');
 }
 
+/* ============================================================
+   PUBLIC API
+   ============================================================ */
 window.ADMIN = {
   goSection: goSection,
   publish: publish,
-    // games
-  newGame: newGame, editGame: editGame, saveGame: saveGame,
-  duplicateGame: duplicateGame, deleteGame: deleteGame,
-  addGameCategory: addGameCategory, deleteGameCategory: deleteGameCategory,
-  saveGameSettings: saveGameSettings,
-  // products
+  reloadFromGitHub: reloadFromGitHub,
+  updateGameStats: updateGameStats,
+
+  // Products
   newProduct: newProduct, editProduct: editProduct, saveProduct: saveProduct,
   duplicateProduct: duplicateProduct, deleteProduct: deleteProduct,
   bulkFeature: bulkFeature, bulkNew: bulkNew, bulkDelete: bulkDelete, clearSelection: clearSelection,
   tagKey: tagKey, removeTag: removeTag,
-  // categories
   addCategory: addCategory, deleteCategory: deleteCategory,
-  // articles
+
+  // Articles
   newArticle: newArticle, editArticle: editArticle, saveArticle: saveArticle,
   duplicateArticle: duplicateArticle, deleteArticle: deleteArticle,
   bulkArticleFeature: bulkArticleFeature, bulkArticleDelete: bulkArticleDelete,
   clearArticleSelection: clearArticleSelection,
   articleTagKey: articleTagKey, removeArticleTag: removeArticleTag,
-    setEditMode: setEditMode, execCmd: execCmd,
-  // settings
+  setEditMode: setEditMode, execCmd: execCmd,
+
+  // Games
+  newGame: newGame, editGame: editGame, saveGame: saveGame,
+  duplicateGame: duplicateGame, deleteGame: deleteGame,
+  addGameCategory: addGameCategory, deleteGameCategory: deleteGameCategory,
+  saveGameSettings: saveGameSettings,
+
+  // Settings
   saveAppearance: saveAppearance, saveHero: saveHero, saveSocial: saveSocial,
   saveSEO: saveSEO, saveAnalytics: saveAnalytics,
-  // github
   saveGitHub: saveGitHub, testGitHub: testGitHub, clearGitHub: clearGitHub,
-  reloadFromGitHub: reloadFromGitHub,
-  // raw
+
+  // Raw
   loadRaw: loadRaw, applyRaw: applyRaw, downloadBackup: downloadBackup, switchRawTab: switchRawTab,
-  // danger
+
+  // Danger
   resetAll: resetAll, deleteAllProducts: deleteAllProducts,
   deleteAllCategories: deleteAllCategories, deleteAllArticles: deleteAllArticles,
+  deleteAllGames: deleteAllGames,
   closeModal: closeModal
 };
 
