@@ -223,6 +223,11 @@ tbody tr:hover{background:rgba(99,102,241,.04)}
       <a class="sb-link" data-sec="articles"><span class="ico">📝</span> المقالات <span class="badge" id="sb-art-count">0</span></a>
       <a class="sb-link" data-sec="article-editor"><span class="ico">➕</span> إضافة مقال</a>
 
+            <div class="sb-sep">HeroGames</div>
+      <a class="sb-link" data-sec="games"><span class="ico">🎮</span> الألعاب <span class="badge" id="sb-game-count">0</span></a>
+      <a class="sb-link" data-sec="game-editor"><span class="ico">➕</span> إضافة لعبة</a>
+      <a class="sb-link" data-sec="game-settings"><span class="ico">⚙️</span> إعدادات HeroGames</a>
+
       <div class="sb-sep">التخصيص</div>
       <a class="sb-link" data-sec="appearance"><span class="ico">🎨</span> المظهر والألوان</a>
       <a class="sb-link" data-sec="hero"><span class="ico">🖼️</span> الصفحة الرئيسية</a>
@@ -687,6 +692,7 @@ tbody tr:hover{background:rgba(99,102,241,.04)}
             <div class="field"><label>Branch</label><input id="g-branch" placeholder="main" value="main"></div>
             <div class="field"><label>مسار ملف المنتجات</label><input id="g-path" placeholder="data.js" value="data.js"></div>
             <div class="field"><label>مسار ملف المقالات</label><input id="g-articles-path" placeholder="articles.js" value="articles.js"></div>
+            <div class="field"><label>مسار ملف الألعاب</label><input id="g-games-path" placeholder="games.js" value="games.js"></div>
             <div class="field full"><label>Personal Access Token *</label>
               <form onsubmit="return false;" style="margin:0">
                 <input id="g-token" type="password" placeholder="ghp_..." autocomplete="new-password">
@@ -728,6 +734,135 @@ tbody tr:hover{background:rgba(99,102,241,.04)}
           <div class="field">
             <textarea id="raw-json" class="code" style="min-height:400px"></textarea>
           </div>
+        </div>
+      </section>
+
+            <!-- ============ GAMES LIST ============ -->
+      <section class="section" data-sec="games" hidden>
+        <div class="card">
+          <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center;justify-content:space-between;margin-bottom:14px">
+            <div>
+              <h2 style="margin:0">🎮 الألعاب</h2>
+              <p class="muted" style="margin:4px 0 0;font-size:13px" id="game-count-line">—</p>
+            </div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap">
+              <input type="search" id="game-search" placeholder="🔍 بحث..." style="height:36px;padding:0 12px;border-radius:8px;border:1px solid var(--line);background:var(--surface2);color:var(--text);outline:none;font-size:13px;min-width:180px">
+              <select id="game-filter" style="height:36px;padding:0 10px;border-radius:8px;border:1px solid var(--line);background:var(--surface2);color:var(--text);outline:none;font-size:13px"></select>
+              <button class="btn btn-primary btn-sm" onclick="ADMIN.newGame()">➕ لعبة جديدة</button>
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>اللعبة</th>
+                  <th>التصنيف</th>
+                  <th>التقييم</th>
+                  <th>الحالة</th>
+                  <th style="text-align:end">إجراءات</th>
+                </tr>
+              </thead>
+              <tbody id="game-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ GAME EDITOR ============ -->
+      <section class="section" data-sec="game-editor" hidden>
+        <form id="game-form" onsubmit="ADMIN.saveGame(event)">
+          <input type="hidden" id="g-editing">
+          <div class="card">
+            <h2 id="game-editor-title">➕ إضافة لعبة جديدة</h2>
+            <p class="card-desc">املأ الحقول ثم اضغط حفظ.</p>
+
+            <h3>المعلومات الأساسية</h3>
+            <div class="form-grid">
+              <div class="field"><label>المعرّف (ID) * <span class="hint">a-z 0-9 -</span></label><input id="gm-id" required placeholder="hardcore-football" pattern="[a-z0-9\-]+"></div>
+              <div class="field"><label>اسم اللعبة *</label><input id="gm-title" required placeholder="Hardcore Football"></div>
+              <div class="field"><label>التصنيف</label><select id="gm-category"></select></div>
+              <div class="field"><label>المطوّر</label><input id="gm-developer" placeholder="HERO Games"></div>
+              <div class="field full"><label>الوصف</label><textarea id="gm-description" style="min-height:70px" placeholder="وصف مختصر للعبة..."></textarea></div>
+            </div>
+
+            <h3 style="margin-top:24px">العرض البصري</h3>
+            <div class="form-grid">
+              <div class="field"><label>الإيموجي <span class="hint">بديل الصورة</span></label><input id="gm-emoji" placeholder="⚽" value="🎮" maxlength="4"></div>
+              <div class="field"><label>رابط الصورة</label><input id="gm-image" placeholder="assets/games/name.webp"></div>
+              <div class="field"><label>لون التدرّج 1</label><input id="gm-c1" type="color" value="#F59E0B"></div>
+              <div class="field"><label>لون التدرّج 2</label><input id="gm-c2" type="color" value="#FBBF24"></div>
+            </div>
+
+            <h3 style="margin-top:24px">الإحصائيات</h3>
+            <div class="form-grid">
+              <div class="field"><label>التقييم (0-5)</label><input id="gm-rating" type="number" step="0.1" min="0" max="5" value="4.5"></div>
+              <div class="field"><label>عدد اللاعبين</label><input id="gm-players" placeholder="100K"></div>
+              <div class="field"><label>الحجم</label><input id="gm-size" placeholder="45 MB"></div>
+              <div class="field"><label>الإصدار</label><input id="gm-version" placeholder="1.2.0"></div>
+            </div>
+
+            <h3 style="margin-top:24px">الروابط والحالة</h3>
+            <div class="form-grid">
+              <div class="field full"><label>رابط اللعبة (Play) *</label><input id="gm-url" placeholder="https://... رابط الصفحة أو اللعبة"></div>
+              <div class="field"><label>شارة</label>
+                <select id="gm-badge">
+                  <option value="">بدون</option>
+                  <option value="new">جديد</option>
+                  <option value="hot">🔥 رائج</option>
+                </select>
+              </div>
+              <div class="field full">
+                <div class="check-row">
+                  <label class="check"><input type="checkbox" id="gm-featured"> <span>⭐ لعبة مميزة (تظهر في الهيرو)</span></label>
+                </div>
+              </div>
+            </div>
+
+            <div style="display:flex;gap:8px;margin-top:24px;flex-wrap:wrap">
+              <button type="submit" class="btn btn-primary">💾 حفظ اللعبة</button>
+              <button type="button" class="btn btn-outline" onclick="ADMIN.newGame()">🗑️ تفريغ</button>
+              <button type="button" class="btn btn-ghost" onclick="ADMIN.goSection('games')">→ العودة للقائمة</button>
+            </div>
+          </div>
+        </form>
+      </section>
+
+      <!-- ============ GAME SETTINGS ============ -->
+      <section class="section" data-sec="game-settings" hidden>
+        <div class="card">
+          <h2>⚙️ إعدادات HeroGames</h2>
+          <p class="card-desc">تحكم في هوية التطبيق ونصوصه.</p>
+
+          <h3>الهوية</h3>
+          <div class="form-grid">
+            <div class="field"><label>اسم التطبيق</label><input id="gs-appName" placeholder="HeroGames"></div>
+            <div class="field"><label>الشعار (إيموجي)</label><input id="gs-logoEmoji" placeholder="🎮" maxlength="4"></div>
+            <div class="field full"><label>رابط صورة الشعار</label><input id="gs-logoImage" placeholder="assets/logo.webp"></div>
+            <div class="field full"><label>الشعار الفرعي (Tagline)</label><input id="gs-tagline" placeholder="أفضل الألعاب في مكان واحد"></div>
+            <div class="field full"><label>اللعبة المميزة (ID) <span class="hint">اتركه فارغاً لاختيار تلقائي</span></label><input id="gs-featuredId" placeholder="hardcore-football"></div>
+          </div>
+
+          <h3 style="margin-top:24px">الألوان</h3>
+          <div class="form-grid">
+            <div class="field"><label>اللون الأساسي</label>
+              <div class="color-row"><input id="gs-primaryColor" type="color" value="#F59E0B"><input id="gs-primaryColorText" type="text" placeholder="#F59E0B"></div>
+            </div>
+            <div class="field"><label>لون الخلفية</label>
+              <div class="color-row"><input id="gs-bgColor" type="color" value="#0F0F1A"><input id="gs-bgColorText" type="text" placeholder="#0F0F1A"></div>
+            </div>
+          </div>
+
+          <h3 style="margin-top:24px">تصنيفات الألعاب</h3>
+          <p class="muted" style="font-size:13px;margin:0 0 14px">التصنيفات الافتراضية: رياضة، أكشن، ألغاز، أطفال، أركيد، استراتيجية، سباق. يمكنك إضافتها أو حذفها من نفس القسم.</p>
+          <div id="game-cats-list"></div>
+          <div class="form-grid" style="margin-top:14px">
+            <div class="field"><label>معرّف التصنيف</label><input id="gc-id" placeholder="sport"></div>
+            <div class="field"><label>الاسم</label><input id="gc-name" placeholder="رياضة"></div>
+            <div class="field"><label>الأيقونة</label><input id="gc-icon" placeholder="⚽" maxlength="4"></div>
+            <div class="field" style="justify-content:end"><button type="button" class="btn btn-primary" onclick="ADMIN.addGameCategory()">➕ إضافة تصنيف</button></div>
+          </div>
+
+          <button class="btn btn-primary" style="margin-top:24px" onclick="ADMIN.saveGameSettings()">💾 حفظ الإعدادات</button>
         </div>
       </section>
 
@@ -911,7 +1046,8 @@ function updatePublishStatus(){
   var dot = $('#publish-dot'), label = $('#publish-label'), btn = $('#publish-btn');
   var dash = $('#dash-gh-status');
   var st = $('#st-publish'), stSub = $('#st-publish-sub');
-  var anyDirty = DIRTY_DATA || DIRTY_ARTICLES;
+  var anyDirty = DIRTY_DATA || DIRTY_ARTICLES || DIRTY_GAMES;
+  if (DIRTY_GAMES) dirtyList.push('games.js');
 
   if (!cfg || !cfg.token){
     dot.className = 'publish-dot err';
@@ -933,7 +1069,7 @@ function updatePublishStatus(){
   if (st) st.textContent = anyDirty ? '⚠️' : '✅';
   if (stSub) stSub.textContent = anyDirty ? ('غير منشور: '+dirtyList.join(' + ')) : 'محدَّث';
 }
-
+var DIRTY_GAMES = false;
 var PUBLISHING = false;  /* قفل لمنع النشر المزدوج */
 
 async function publish(){
@@ -941,7 +1077,7 @@ async function publish(){
 
   var cfg = getGH();
   if (!cfg || !cfg.token){ toast('اضبط إعدادات GitHub أولًا','err'); return; }
-  if (!DIRTY_DATA && !DIRTY_ARTICLES){ toast('لا توجد تغييرات للنشر','err'); return; }
+  if (!DIRTY_DATA && !DIRTY_ARTICLES && !DIRTY_GAMES){ toast('لا توجد تغييرات للنشر','err'); return; }
 
   PUBLISHING = true;
   var btn = $('#publish-btn');
@@ -961,6 +1097,12 @@ async function publish(){
       await ghPut(cfg, cfg.articlesPath, generateArticlesJs(), 'Publish articles.js — '+new Date().toISOString());
       DIRTY_ARTICLES = false;
       results.push('articles.js ✅');
+    }
+        if (DIRTY_GAMES){
+      btn.innerHTML = '<span class="loader"></span> نشر games.js...';
+      await ghPut(cfg, cfg.gamesPath || 'games.js', generateGamesJs(), 'Publish games.js — '+new Date().toISOString());
+      DIRTY_GAMES = false;
+      results.push('games.js ✅');
     }
 
     // ✅ إعادة تعيين الزر عند النجاح
@@ -1008,6 +1150,9 @@ function goSection(name){
   if (name==='raw') loadRaw();
   if (window.innerWidth <= 900) $('#sidebar').classList.remove('open');
   window.scrollTo({top:0,behavior:'smooth'});
+  if (name==='games') renderGamesTable();
+  if (name==='game-editor') fillGameCategorySelect();
+  if (name==='game-settings') fillGameSettings();
 }
 
 /* ---------- Stats ---------- */
@@ -1046,6 +1191,12 @@ function updateStats(){
 }
 function refreshDashboard(){ updateStats(); updatePublishStatus(); }
 
+  // ⭐ دالة جديدة منفصلة
+function updateGameStats(){
+  if ($('#sb-game-count')) $('#sb-game-count').textContent = GAMES_STATE.games.length;
+}
+
+function refreshDashboard(){ updateStats(); updateGameStats(); updatePublishStatus(); }
 /* ============================================================
    PRODUCTS
    ============================================================ */
@@ -1871,7 +2022,221 @@ function deleteAllArticles(){
     toast('تم الحذف','ok'); closeModal();
   });
 }
+/* ============================================================
+   GAMES MANAGEMENT
+   ============================================================ */
+var selectedGames = new Set();
 
+function renderGamesTable(){
+  var search = ($('#game-search').value||'').toLowerCase();
+  var filterCat = $('#game-filter').value;
+
+  $('#game-filter').innerHTML = '<option value="">كل التصنيفات</option>' + GAMES_STATE.categories.map(function(c){
+    return '<option value="'+escapeHtml(c.id)+'"'+(filterCat===c.id?' selected':'')+'>'+c.icon+' '+escapeHtml(c.name)+'</option>';
+  }).join('');
+
+  var list = GAMES_STATE.games.filter(function(g){
+    if (filterCat && g.category !== filterCat) return false;
+    if (!search) return true;
+    return (g.title+' '+g.id+' '+(g.description||'')).toLowerCase().indexOf(search) !== -1;
+  });
+
+  var tb = $('#game-tbody');
+  if (!list.length){
+    tb.innerHTML = '<tr><td colspan="5" class="empty-row"><div class="big">🎮</div><div>لا توجد ألعاب</div></td></tr>';
+    return;
+  }
+
+  tb.innerHTML = list.map(function(g){
+    var cat = GAMES_STATE.categories.filter(function(c){return c.id===g.category;})[0] || {icon:'🎮',name:g.category||'—'};
+    var rating = Number(g.rating||0).toFixed(1);
+    return '<tr>'+
+      '<td><div class="cell-thumb">'+
+        '<div class="thumb" style="--c1:'+(g.c1||'#F59E0B')+';--c2:'+(g.c2||'#FBBF24')+'">'+(g.image?'<img src="'+escapeHtml(g.image)+'" onerror="this.parentNode.textContent=\''+(g.emoji||'🎮')+'\'">':(g.emoji||'🎮'))+'</div>'+
+        '<div style="min-width:0"><div class="cell-name">'+escapeHtml(g.title)+'</div><div class="cell-id">'+escapeHtml(g.id)+'</div></div>'+
+      '</div></td>'+
+      '<td><span class="pill">'+cat.icon+' '+escapeHtml(cat.name)+'</span></td>'+
+      '<td style="font-weight:700">'+(rating!=='0.0'?'⭐ '+rating:'—')+'</td>'+
+      '<td>'+(g.featured?'<span class="pill ok">⭐ مميز</span>':'<span class="muted">—</span>')+'</td>'+
+      '<td><div class="row-actions">'+
+        '<button class="btn btn-outline btn-sm" onclick="ADMIN.editGame(\''+escapeHtml(g.id)+'\')">✏️</button>'+
+        '<button class="btn btn-outline btn-sm" onclick="ADMIN.duplicateGame(\''+escapeHtml(g.id)+'\')">📋</button>'+
+        '<button class="btn btn-danger btn-sm" onclick="ADMIN.deleteGame(\''+escapeHtml(g.id)+'\')">🗑️</button>'+
+      '</div></td>'+
+    '</tr>';
+  }).join('');
+
+  $('#game-count-line').textContent = GAMES_STATE.games.length + ' لعبة في ' + GAMES_STATE.categories.length + ' تصنيف';
+}
+
+function fillGameCategorySelect(selected){
+  var sel = $('#gm-category');
+  if (!sel) return;
+  sel.innerHTML = '<option value="">بدون تصنيف</option>' + GAMES_STATE.categories.map(function(c){
+    return '<option value="'+escapeHtml(c.id)+'"'+(selected===c.id?' selected':'')+'>'+c.icon+' '+escapeHtml(c.name)+'</option>';
+  }).join('');
+}
+
+function newGame(){
+  $('#game-form').reset();
+  $('#g-editing').value = '';
+  $('#gm-emoji').value = '🎮';
+  $('#gm-c1').value = '#F59E0B';
+  $('#gm-c2').value = '#FBBF24';
+  $('#gm-rating').value = '4.5';
+  $('#game-editor-title').textContent = '➕ إضافة لعبة جديدة';
+  fillGameCategorySelect();
+  goSection('game-editor');
+}
+
+function editGame(id){
+  var g = GAMES_STATE.games.filter(function(x){ return x.id===id; })[0];
+  if (!g) return;
+  $('#g-editing').value = g.id;
+  $('#gm-id').value = g.id;
+  $('#gm-title').value = g.title || '';
+  fillGameCategorySelect(g.category);
+  $('#gm-developer').value = g.developer || '';
+  $('#gm-description').value = g.description || '';
+  $('#gm-emoji').value = g.emoji || '🎮';
+  $('#gm-image').value = g.image || '';
+  $('#gm-c1').value = g.c1 || '#F59E0B';
+  $('#gm-c2').value = g.c2 || '#FBBF24';
+  $('#gm-rating').value = g.rating || 4.5;
+  $('#gm-players').value = g.players || '';
+  $('#gm-size').value = g.size || '';
+  $('#gm-version').value = g.version || '';
+  $('#gm-url').value = g.url || '';
+  $('#gm-badge').value = g.badge || '';
+  $('#gm-featured').checked = !!g.featured;
+  $('#game-editor-title').textContent = '✏️ تعديل: ' + g.title;
+  goSection('game-editor');
+}
+
+function saveGame(e){
+  e.preventDefault();
+  var editing = $('#g-editing').value;
+  var id = $('#gm-id').value.trim();
+  if (!/^[a-z0-9\-]+$/.test(id)){ toast('المعرّف: a-z 0-9 - فقط','err'); return; }
+  if (GAMES_STATE.games.some(function(g){ return g.id===id && g.id!==editing; })){ toast('المعرّف مستخدم','err'); return; }
+
+  var game = {
+    id: id,
+    title: $('#gm-title').value.trim(),
+    category: $('#gm-category').value,
+    developer: $('#gm-developer').value.trim(),
+    description: $('#gm-description').value.trim(),
+    emoji: $('#gm-emoji').value.trim() || '🎮',
+    image: $('#gm-image').value.trim(),
+    c1: $('#gm-c1').value,
+    c2: $('#gm-c2').value,
+    rating: Math.max(0, Math.min(5, parseFloat($('#gm-rating').value) || 0)),
+    players: $('#gm-players').value.trim(),
+    size: $('#gm-size').value.trim(),
+    version: $('#gm-version').value.trim(),
+    url: $('#gm-url').value.trim(),
+    badge: $('#gm-badge').value,
+    featured: $('#gm-featured').checked
+  };
+
+  if (editing){
+    GAMES_STATE.games = GAMES_STATE.games.map(function(g){ return g.id===editing ? game : g; });
+    toast('✅ تم تحديث اللعبة','ok');
+  } else {
+    GAMES_STATE.games.push(game);
+    toast('✅ تمت إضافة اللعبة','ok');
+  }
+  DIRTY_GAMES = true;
+  updatePublishStatus();
+  newGame();
+  goSection('games');
+}
+
+function duplicateGame(id){
+  var g = GAMES_STATE.games.filter(function(x){ return x.id===id; })[0]; if (!g) return;
+  var copy = JSON.parse(JSON.stringify(g));
+  copy.id = g.id + '-copy-' + Math.random().toString(36).slice(2,5);
+  copy.title = g.title + ' (نسخة)';
+  copy.featured = false;
+  GAMES_STATE.games.push(copy);
+  DIRTY_GAMES = true;
+  renderGamesTable();
+  toast('تم النسخ','ok');
+}
+
+function deleteGame(id){
+  openModal('حذف اللعبة', 'حذف "'+id+'"؟', function(){
+    GAMES_STATE.games = GAMES_STATE.games.filter(function(g){ return g.id!==id; });
+    DIRTY_GAMES = true;
+    renderGamesTable();
+    toast('تم الحذف','ok');
+    closeModal();
+  });
+}
+
+function renderGameCats(){
+  var box = $('#game-cats-list');
+  if (!box) return;
+  box.innerHTML = GAMES_STATE.categories.map(function(c){
+    var used = GAMES_STATE.games.filter(function(g){return g.category===c.id;}).length;
+    return '<div style="display:flex;align-items:center;gap:12px;padding:10px 14px;border:1px solid var(--line);border-radius:12px;margin-bottom:8px;background:var(--surface2)">'+
+      '<div style="font-size:20px">'+c.icon+'</div>'+
+      '<div style="flex:1"><b>'+escapeHtml(c.name)+'</b> <span class="cell-id">· '+used+' لعبة</span></div>'+
+      '<button class="btn btn-danger btn-sm" onclick="ADMIN.deleteGameCategory(\''+escapeHtml(c.id)+'\')">🗑️</button>'+
+    '</div>';
+  }).join('');
+}
+
+function addGameCategory(){
+  var id = $('#gc-id').value.trim();
+  var name = $('#gc-name').value.trim();
+  var icon = $('#gc-icon').value.trim() || '🎮';
+  if (!id || !name){ toast('املأ المعرّف والاسم','err'); return; }
+  if (GAMES_STATE.categories.some(function(c){ return c.id===id; })){ toast('التصنيف موجود','err'); return; }
+  GAMES_STATE.categories.push({id:id, name:name, icon:icon});
+  DIRTY_GAMES = true;
+  $('#gc-id').value = ''; $('#gc-name').value = ''; $('#gc-icon').value = '';
+  renderGameCats();
+  toast('✅ تمت الإضافة','ok');
+}
+
+function deleteGameCategory(id){
+  var used = GAMES_STATE.games.filter(function(g){ return g.category===id; }).length;
+  if (used>0){ toast('لا يمكن — '+used+' لعبة في هذا التصنيف','err'); return; }
+  GAMES_STATE.categories = GAMES_STATE.categories.filter(function(c){ return c.id!==id; });
+  DIRTY_GAMES = true;
+  renderGameCats();
+  toast('تم الحذف','ok');
+}
+
+function fillGameSettings(){
+  var s = GAMES_STATE.settings;
+  $('#gs-appName').value = s.appName || '';
+  $('#gs-logoEmoji').value = s.logoEmoji || '';
+  $('#gs-logoImage').value = s.logoImage || '';
+  $('#gs-tagline').value = s.tagline || '';
+  $('#gs-featuredId').value = s.featuredId || '';
+  $('#gs-primaryColor').value = s.primaryColor || '#F59E0B';
+  $('#gs-primaryColorText').value = s.primaryColor || '#F59E0B';
+  $('#gs-bgColor').value = s.bgColor || '#0F0F1A';
+  $('#gs-bgColorText').value = s.bgColor || '#0F0F1A';
+  renderGameCats();
+}
+
+function saveGameSettings(){
+  var s = GAMES_STATE.settings;
+  s.appName = $('#gs-appName').value.trim() || 'HeroGames';
+  s.logoEmoji = $('#gs-logoEmoji').value.trim() || '🎮';
+  s.logoImage = $('#gs-logoImage').value.trim();
+  s.tagline = $('#gs-tagline').value.trim();
+  s.featuredId = $('#gs-featuredId').value.trim();
+  s.primaryColor = $('#gs-primaryColorText').value.trim() || $('#gs-primaryColor').value;
+  s.bgColor = $('#gs-bgColorText').value.trim() || $('#gs-bgColor').value;
+  DIRTY_GAMES = true;
+  updatePublishStatus();
+  toast('✅ تم الحفظ — لا تنسَ النشر','ok');
+}
+  
 /* ---------- Modal ---------- */
 function openModal(title, body, onConfirm){
   $('#modal-title').textContent = title;
@@ -1922,6 +2287,17 @@ function bindUI(){
     list.forEach(function(a){ this.checked ? selectedArticles.add(a.id) : selectedArticles.delete(a.id); }, this);
     renderArticlesTable();
   });
+    // games
+  if ($('#game-search')) $('#game-search').addEventListener('input', renderGamesTable);
+  if ($('#game-filter')) $('#game-filter').addEventListener('change', renderGamesTable);
+  // color sync للعبة والإعدادات
+  [['gs-primaryColor','gs-primaryColorText'],['gs-bgColor','gs-bgColorText']].forEach(function(pair){
+    var a = $('#'+pair[0]), b = $('#'+pair[1]);
+    if (a && b){
+      a.addEventListener('input', function(){ b.value = this.value; });
+      b.addEventListener('input', function(){ var v=this.value.trim(); if (/^#[0-9a-fA-F]{6}$/.test(v)) a.value = v; });
+    }
+  });
 
   // color sync
   [['s-primaryColor','s-primaryColorText'],['s-secondaryColor','s-secondaryColorText'],['s-accentColor','s-accentColorText']].forEach(function(pair){
@@ -1963,6 +2339,35 @@ function extractData(txt, varName){
   catch(e){ console.warn('JSON parse error for '+varName+':', e); return null; }
 }
 /* ============================================================
+   GAMES STATE
+   ============================================================ */
+var G = window.HERO_GAMES || {};
+var GAMES_STATE = {
+  version: 1,
+  updatedAt: G.updatedAt || new Date().toISOString(),
+  categories: JSON.parse(JSON.stringify(G.categories || [
+    {id:'sport',name:'رياضة',icon:'⚽'},
+    {id:'action',name:'أكشن',icon:'💥'},
+    {id:'puzzle',name:'ألغاز',icon:'🧩'},
+    {id:'kids',name:'أطفال',icon:'🧸'},
+    {id:'arcade',name:'أركيد',icon:'👾'},
+    {id:'strategy',name:'استراتيجية',icon:'♟️'},
+    {id:'racing',name:'سباق',icon:'🏎️'}
+  ])),
+  settings: Object.assign({
+    appName:'HeroGames', tagline:'أفضل الألعاب في مكان واحد',
+    logoImage:'', logoEmoji:'🎮',
+    primaryColor:'#F59E0B', bgColor:'#0F0F1A',
+    featuredId:'', showDailyBonus:true
+  }, G.settings || {}),
+  games: JSON.parse(JSON.stringify(G.games || []))
+};
+
+function generateGamesJs(){
+  GAMES_STATE.updatedAt = new Date().toISOString();
+  return '/* HERO Games data — auto-generated */\nwindow.HERO_GAMES = ' + JSON.stringify(GAMES_STATE, null, 2) + ';\n';
+}
+/* ============================================================
    إعادة تحميل البيانات من GitHub مباشرة (تتجاوز الكاش)
    ============================================================ */
 async function loadFromGitHub(){
@@ -1994,7 +2399,24 @@ async function loadFromGitHub(){
       console.warn('[load] data.js status:', r1.status);
     }
   } catch(e){ console.warn('[load] data.js fetch error:', e); }
-
+    // جلب games.js
+  try {
+    var r3 = await fetch(base + (cfg.gamesPath || 'games.js') + '?t=' + Date.now(), { cache: 'no-store' });
+    if (r3.ok){
+      var txt3 = await r3.text();
+      var d3 = extractData(txt3, 'HERO_GAMES');
+      if (d3){
+        GAMES_STATE.games = d3.games || [];
+        GAMES_STATE.categories = d3.categories || GAMES_STATE.categories;
+        GAMES_STATE.settings = Object.assign(GAMES_STATE.settings, d3.settings || {});
+        console.log('[load] games.js ✓ — ' + GAMES_STATE.games.length + ' لعبة');
+        loaded = true;
+      }
+    } else {
+      console.warn('[load] games.js status:', r3.status);
+    }
+  } catch(e){ console.warn('[load] games.js fetch error:', e); }
+  
   // جلب articles.js
   try {
     var r2 = await fetch(base + (cfg.articlesPath || 'articles.js') + '?t=' + Date.now(), { cache: 'no-store' });
@@ -2010,10 +2432,14 @@ async function loadFromGitHub(){
       console.warn('[load] articles.js status:', r2.status);
     }
   } catch(e){ console.warn('[load] articles.js fetch error:', e); }
-
+    // ⭐ أضف هذه الأسطر الثلاثة هنا
+  renderGameCats();
+  fillGameSettings();
+  updateGameStats();
   return loaded;
 }
 
+  
 /* إعادة تحميل يدوية (مع إعادة تحديث كل الواجهة) */
 async function reloadFromGitHub(){
   toast('🔄 جاري إعادة التحميل من GitHub...');
@@ -2090,6 +2516,11 @@ async function init(){
 window.ADMIN = {
   goSection: goSection,
   publish: publish,
+    // games
+  newGame: newGame, editGame: editGame, saveGame: saveGame,
+  duplicateGame: duplicateGame, deleteGame: deleteGame,
+  addGameCategory: addGameCategory, deleteGameCategory: deleteGameCategory,
+  saveGameSettings: saveGameSettings,
   // products
   newProduct: newProduct, editProduct: editProduct, saveProduct: saveProduct,
   duplicateProduct: duplicateProduct, deleteProduct: deleteProduct,
